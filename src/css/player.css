@@ -1,0 +1,21 @@
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0 0 0;
+  border: 1px solid white;
+}
+
+.player-name {
+  display: flex;
+  align-items: center;
+}
+
+.player-name-input {
+  height: 20px;
+}
+
+.player-name-btn {
+  color: white;
+   height: 35px;
+}

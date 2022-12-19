@@ -1,0 +1,13 @@
+.wrapper-grid {
+  display: grid;
+  grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px;
+}
+
+.square {
+  height: 40px;
+  border: 1px solid white;
+}
+
+.active {
+  background-color: red;
+}

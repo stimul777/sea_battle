@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 
-// пути
+// paths
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 // kill CORS
 app.use(express.static(__dirname + '/dist'));
 
-// socket
+//socket
 io.on('connection', (socket) => {
   socket.on('test-send', (msg) => {
     io.emit('test-send', msg);
