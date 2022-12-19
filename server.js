@@ -1,6 +1,6 @@
-import express from 'express'
-import http from 'http'
-import { Server } from "socket.io";
+import express from 'express';
+import http from 'http';
+import { Server } from 'socket.io';
 
 // пути
 import { fileURLToPath } from 'url';
@@ -10,10 +10,9 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
-const port = 3000
+const port = 3000;
 // socket
 const io = new Server(server);
-
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/dist/index.html');
@@ -23,7 +22,7 @@ app.use(express.static(__dirname + '/dist'));
 
 // socket
 io.on('connection', (socket) => {
-  socket.on('test-send', msg => {
+  socket.on('test-send', (msg) => {
     io.emit('test-send', msg);
   });
 });
