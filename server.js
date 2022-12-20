@@ -22,10 +22,12 @@ app.use(express.static(__dirname + '/dist'));
 
 //socket
 io.on('connection', (socket) => {
-  socket.on('test-send', (msg) => {
-    io.emit('test-send', msg);
+  socket.on('test-shot', (msg) => {
+    io.emit('test-shot', msg);
+    console.log('tst shot-server', msg);
   });
 });
+
 server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });

@@ -1,4 +1,6 @@
+// Дока https://habr.com/ru/post/542234/
 {
+  "include": ["src", "vite.config.*"], //подключить vite config
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
@@ -13,7 +15,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    // настройка путей
+    "baseUrl": ".",
+    "paths": {
+    "@/*": [
+          "./src/*"
+        ]
+    },
   },
-  "include": ["src"]
 }
