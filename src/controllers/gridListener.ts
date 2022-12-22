@@ -1,5 +1,4 @@
-import { Player } from '@/controllers/player';
-const player = new Player();
+import { player } from '@/controllers/player';
 
 //Слушатель событий с сетки
 export function GridListener() {
@@ -11,8 +10,9 @@ export function GridListener() {
       event.stopPropagation();
       //@ts-ignore
       const elem = event.target?.classList[0];
-
+      //@ts-ignore
       if (event.target.classList.contains('active')) {
+        //@ts-ignore
         event.target.classList.remove('active');
         player.deleteShip(elem);
         return;
@@ -31,7 +31,7 @@ export function GridListener() {
       const elem = event.target.classList[0];
       //@ts-ignore
       event.target.classList.add('shot');
-      player.setShips(elem);
+      player.shotAtShip(elem);
     });
   };
 

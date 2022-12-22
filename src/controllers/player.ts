@@ -1,4 +1,5 @@
-export class Player {
+import { setShot } from '@/models/socket';
+class Player {
   victories: number;
   locationOfVessels: never[];
   myShips: string[];
@@ -16,19 +17,30 @@ export class Player {
     const name = document.querySelector<HTMLDivElement>('.player-name-input');
   }
 
+  // установка моих кораблей
   setShips(value: string) {
     this.myShips.push(value);
   }
 
+  // удаление моих кораблей
   deleteShip(value: string) {
     this.myShips.splice(this.myShips.indexOf(value), 1);
   }
 
+  // выстрел по чужому кораблю
   shotAtShip(value: string) {
     this.myShots.push(value);
+    setShot(value);
   }
 
-  sendShot(value: string) {
-    console.log(value);
+  // Выстрел в меня
+  shotAtMe(value: string) {
+    console.log('value', value);
+    console.log('this.myShips', this.myShips);
+    this.myShips.includes(value) ? alert('Попадание!') : alert('!Промах!');
+    console.log('this.myShips', this.myShips.includes(value));
   }
 }
+
+const player = new Player();
+export { player };

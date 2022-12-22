@@ -20,14 +20,15 @@ app.get('/', (req, res) => {
 // kill CORS
 app.use(express.static(__dirname + '/dist'));
 
-//socket
+//socket connection
 io.on('connection', (socket) => {
-  socket.on('test-shot', (msg) => {
-    io.emit('test-shot', msg);
-    console.log('tst shot-server', msg);
+  socket.on('shot', (value) => {
+    console.log('tst shot-server', value);
+    io.emit('shot-emit', value);
   });
 });
 
+//socket listen
 server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
