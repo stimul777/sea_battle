@@ -1,6 +1,17 @@
 .wrapper-grid {
+  display: flex;
+  border: 1px solid red;
+}
+
+.my-grid  {
   display: grid;
   grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px;
+}
+
+.enemy-grid {
+  display: grid;
+  grid-template-columns: 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px;
+  margin: 0 0 0 50px;
 }
 
 .square {
