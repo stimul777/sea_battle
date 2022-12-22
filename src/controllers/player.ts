@@ -2,11 +2,13 @@ export class Player {
   victories: number;
   locationOfVessels: never[];
   myShips: string[];
+  myShots: string[];
 
   constructor() {
     this.victories = 0;
     this.locationOfVessels = [];
     this.myShips = [];
+    this.myShots = [];
   }
 
   setAbout() {
@@ -16,10 +18,17 @@ export class Player {
 
   setShips(value: string) {
     this.myShips.push(value);
-    console.log('myShips', this.myShips);
+  }
+
+  deleteShip(value: string) {
+    this.myShips.splice(this.myShips.indexOf(value), 1);
+  }
+
+  shotAtShip(value: string) {
+    this.myShots.push(value);
   }
 
   sendShot(value: string) {
-    console.log();
+    console.log(value);
   }
 }
