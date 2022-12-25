@@ -1,4 +1,5 @@
 import { player } from '@/controllers/player';
+import { ships } from '@/controllers/ships';
 
 //Слушатель событий с сетки
 export function GridListener() {
@@ -15,12 +16,15 @@ export function GridListener() {
       if (event.target.classList.contains('active')) {
         //@ts-ignore
         event.target.classList.remove('active');
+        ships.setShip('remove');
         player.deleteShip(elem);
         return;
       }
 
       //@ts-ignore
       event.target.classList.add('active');
+      ships.setShip('add');
+      console.log('ships', ships.ships);
       player.setShips(elem);
     });
   };
