@@ -10,6 +10,7 @@ export function GridListener() {
       event.stopPropagation();
       //@ts-ignore
       const elem = event.target?.classList[0];
+
       //@ts-ignore
       if (event.target.classList.contains('active')) {
         //@ts-ignore

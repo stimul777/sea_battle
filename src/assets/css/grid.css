@@ -86,3 +86,28 @@
 .shot {
   background-color: blue;
 }
+
+.square-miss{
+  background: rgb(0, 0, 97);
+}
+
+.square-fire-animation {
+  background: url('/src/assets/animations/fire.gif');
+  background-size: 60px 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.square-hit-animation {
+  background: url('/src/assets/animations/explosion.gif');
+  background-size: 60px 60px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.square-miss-animation {
+   background: url('/src/assets/animations/spray.gif');
+  background-size: 60px 70px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
