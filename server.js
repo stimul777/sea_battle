@@ -11,6 +11,8 @@ const __dirname = dirname(__filename);
 const app = express();
 const server = http.createServer(app);
 const port = 3000;
+const connections = [];
+
 // socket
 const io = new Server(server);
 
@@ -22,9 +24,19 @@ app.use(express.static(__dirname + '/dist'));
 
 //socket connection
 io.on('connection', (socket) => {
+  connections.push(socket);
+  // выстрел по противнику
   socket.on('shot', (value) => {
-    console.log('tst shot-server', value);
-    io.emit('shot-emit', value);
+    socket.broadcast.emit('shot-emit', value);
+  });
+
+  // Сообщение противнику о попадании\промахе
+  socket.on('msg-shot', (value) => {
+    socket.broadcast.emit('msg-shot-emit', value);
+  });
+
+  socket.on('disconnect', (value) => {
+    console.log('disconnect');
   });
 });
 

@@ -1,4 +1,4 @@
-import { setShot } from '@/models/socket';
+import { setShot, msgShot } from '@/models/socket';
 class Player {
   victories: number;
   locationOfVessels: never[];
@@ -37,8 +37,14 @@ class Player {
   shotAtMe(value: string) {
     console.log('value', value);
     console.log('this.myShips', this.myShips);
-    this.myShips.includes(value) ? alert('Попадание!') : alert('!Промах!');
-    console.log('this.myShips', this.myShips.includes(value));
+    const isCondition = this.myShips.includes(value);
+    isCondition ? alert(`В вас попали!Сектор ${value}`) : alert(`Противник промахнулся! Сектор ${value}`);
+    msgShot(isCondition);
+  }
+
+  // сообщение об успехе\промахе
+  msgToPlayer(flag: boolean) {
+    flag ? alert(`Вы попали!`) : alert(`Вы промахнулись!`);
   }
 }
 

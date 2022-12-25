@@ -9,8 +9,16 @@ export function setShot(value: string) {
   socket.emit('shot', value);
 }
 
+// Сообщить противнику о попадании или промахе
+export function msgShot(value: boolean) {
+  socket.emit('msg-shot', value);
+}
+
 // Сокет инитится сразу и висит постоянно
 socket.on('shot-emit', function (value) {
-  console.log('START SOCKET-client', value);
   player.shotAtMe(value);
+});
+
+socket.on('msg-shot-emit', function (value) {
+  player.msgToPlayer(value);
 });
