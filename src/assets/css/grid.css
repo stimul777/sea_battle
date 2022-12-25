@@ -1,0 +1,88 @@
+.wrapper-grid {
+  display: flex;
+}
+
+.my-grid_wrapper, .enemy-grid_wrapper  {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  width: 680px;
+  margin: 0 30px 0 0;
+  /* border: 1px solid orange;   */
+}
+
+.lettersTop {
+  display: flex;
+  justify-content: space-around;
+  max-height: 40px;
+  width: 600px;
+  margin: 0 0 0 30px;
+  /* border: 1px solid red; */
+}
+
+.lettersTop p {
+  font-family: 'Futura';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 0px;
+  letter-spacing: 0.05em;
+  color: rgba(113, 124, 150, 0.7);
+  text-transform: uppercase;
+
+}
+
+.numbersLeft {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 430px;
+  margin: 38px 0 0 0;
+
+}
+
+.numbersLeft p {
+  font-family: 'Futura';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 0px;
+  letter-spacing: 0.05em;
+  color: rgba(113, 124, 150, 0.7);
+}
+
+.enemy-grid_wrapper {
+  /* border: 1px solid blue; */
+
+}
+
+.my-grid, .enemy-grid   {
+  display: grid;
+  grid-template-columns: repeat(10, 60px);
+  width: 600px;
+  height: 430px;
+  margin: 0 0 0 30px;
+  /* border: 1px solid red; */
+}
+
+/* .enemy-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 60px);
+  margin: 0 0 0 50px;
+} */
+
+.square {
+  height: 40px;
+  background: #61C6FF;
+  border: 1.38636px solid #FFFFFF;
+  border-radius: 6px;
+}
+
+.active {
+  background-color: red;
+}
+
+.shot {
+  background-color: blue;
+}
