@@ -5,7 +5,7 @@ import { player } from '@/controllers/player';
 
 // Выстрел по противнику
 export function setShot(value: string) {
-  console.log('Выстрел!', value);
+  console.log('Выстрел в противника:', value);
   socket.emit('shot', value);
 }
 

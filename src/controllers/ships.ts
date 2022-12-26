@@ -1,4 +1,5 @@
 import { TShips } from '@/types/ships';
+import { onPier } from '@/view/pier/pier';
 
 class Ships {
   ships: number;
@@ -24,11 +25,40 @@ class Ships {
         break;
     }
 
-    // а тут надо какую-т реактивность с хтмл
-    if (this.ships === 16) {
-      console.log('222');
-      this.shipsRang.battleship = 0;
+    console.log('this.ships', this.ships);
+
+    let rerender = false;
+    switch (this.ships) {
+      // case this.ships > 16:
+      //   this.shipsRang.battleship = 1;
+      //   rerender = true;
+      //   break;
+      case 16:
+        this.shipsRang.battleship -= 1;
+        rerender = true;
+        break;
+      case 13:
+      case 10:
+        this.shipsRang.cruisers -= 1;
+        rerender = true;
+        break;
+      case 8:
+      case 6:
+      case 4:
+        this.shipsRang.destroyers -= 1;
+        rerender = true;
+        break;
+      case 3:
+      case 2:
+      case 1:
+      case 0:
+        this.shipsRang.boats -= 1;
+        rerender = true;
+        break;
+      default:
     }
+
+    if (rerender) onPier(); //ререндер
   }
 }
 

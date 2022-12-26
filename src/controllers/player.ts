@@ -41,13 +41,25 @@ class Player {
     console.log('this.myShips', this.myShips);
     const isCondition = this.myShips.includes(value);
     shotProcessing(isCondition, value);
-    isCondition ? alert(`В вас попали!Сектор ${value}`) : alert(`Противник промахнулся! Сектор ${value}`);
+
+    if (isCondition) {
+      alert(`В вас попали!Сектор ${value}`);
+      this.deleteShip(value);
+      if (this.myShips.length === 0) this.endGame();
+    } else {
+      alert(`Противник промахнулся! Сектор ${value}`);
+    }
+
     msgShot(isCondition);
   }
 
   // сообщение противнику об успехе\промахе
   msgToPlayer(flag: boolean) {
     flag ? alert(`Вы попали!`) : alert(`Вы промахнулись!`);
+  }
+
+  endGame() {
+    alert(`Вы проиграли!`);
   }
 }
 

@@ -2,4 +2,9 @@
   width: 200px;
   border: 1px solid #61C6FF;
   border-radius: 6px;
+  font-family: 'Futura';
+  font-style: normal;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  color: rgba(113, 124, 150, 0.7);
 }

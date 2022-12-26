@@ -9,6 +9,8 @@ export function GridListener() {
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event) => {
       event.stopPropagation();
+      if (ships.ships === 0) return;
+
       //@ts-ignore
       const elem = event.target?.classList[0];
 
@@ -24,7 +26,6 @@ export function GridListener() {
       //@ts-ignore
       event.target.classList.add('active');
       ships.setShip('add');
-      console.log('ships', ships.ships);
       player.setShips(elem);
     });
   };
