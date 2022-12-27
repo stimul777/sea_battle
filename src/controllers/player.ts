@@ -1,5 +1,6 @@
 import { setShot, msgShot } from '@/models/socket';
 import { shotProcessing } from '@/view/grid/events';
+import { onConsole } from '@/helpers/console';
 
 class Player {
   victories: number;
@@ -32,6 +33,7 @@ class Player {
   // выстрел по чужому кораблю
   shotAtShip(value: string) {
     this.myShots.push(value);
+    onConsole('green', 'Выстрел по противнику:', value);
     setShot(value);
   }
 
@@ -43,11 +45,11 @@ class Player {
     shotProcessing(isCondition, value);
 
     if (isCondition) {
-      alert(`В вас попали!Сектор ${value}`);
+      onConsole('green', 'В вас попали! Сектор:', value);
       this.deleteShip(value);
       if (this.myShips.length === 0) this.endGame();
     } else {
-      alert(`Противник промахнулся! Сектор ${value}`);
+      onConsole('green', 'Противник промахнулся! Сектор:', value);
     }
 
     msgShot(isCondition);
@@ -55,7 +57,7 @@ class Player {
 
   // сообщение противнику об успехе\промахе
   msgToPlayer(flag: boolean) {
-    flag ? alert(`Вы попали!`) : alert(`Вы промахнулись!`);
+    flag ? onConsole('cyan', 'Вы попали!', null) : onConsole('cyan', 'Вы промахнулись!', null);
   }
 
   endGame() {
