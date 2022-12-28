@@ -1,6 +1,7 @@
 import { setShot, msgShot } from '@/models/socket';
 import { shotProcessing } from '@/view/grid/events';
 import { onConsole } from '@/helpers/console';
+import { sound } from '@/view/sound';
 
 class Player {
   victories: number;
@@ -46,9 +47,11 @@ class Player {
 
     if (isCondition) {
       onConsole('green', 'В вас попали! Сектор:', value);
+      sound('hit');
       this.deleteShip(value);
       if (this.myShips.length === 0) this.endGame();
     } else {
+      sound('miss');
       onConsole('green', 'Противник промахнулся! Сектор:', value);
     }
 
@@ -56,8 +59,8 @@ class Player {
   }
 
   // сообщение противнику об успехе\промахе
-  msgToPlayer(flag: boolean) {
-    flag ? onConsole('cyan', 'Вы попали!', null) : onConsole('cyan', 'Вы промахнулись!', null);
+  msgToPlayer(hit: boolean) {
+    hit ? onConsole('cyan', 'Вы попали!', '') : onConsole('cyan', 'Вы промахнулись!', '');
   }
 
   endGame() {

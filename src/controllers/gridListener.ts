@@ -1,5 +1,6 @@
 import { player } from '@/controllers/player';
 import { ships } from '@/controllers/ships';
+import { sound } from '@/view/sound';
 
 //Слушатель событий с сетки
 export function GridListener() {
@@ -10,7 +11,6 @@ export function GridListener() {
     $myGrid?.addEventListener('click', (event) => {
       event.stopPropagation();
       if (ships.ships === 0) return;
-
       //@ts-ignore
       const elem = event.target?.classList[0];
 
@@ -37,6 +37,7 @@ export function GridListener() {
       const elem = event.target.classList[0];
       //@ts-ignore
       event.target.classList.add('shot');
+      sound('shot');
       player.shotAtShip(elem);
     });
   };
