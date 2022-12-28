@@ -80,14 +80,15 @@
 }
 
 .active {
-  background-color: rgb(43, 95, 95);
+  background-color: rgb(242, 151, 245);
 }
 
+/* Удалить нахой(возможно) */
 .shot {
-  background-color: blue;
+  background-color: rgb(43, 132, 192);
 }
 
-.square-miss{
+.square-miss {
   background: rgb(0, 0, 97);
 }
 

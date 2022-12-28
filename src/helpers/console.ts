@@ -10,5 +10,5 @@ export function onConsole(color: string, text: any, value: any) {
 
   const setColor: string | undefined = Object.keys(style).find((key: string) => key === color);
   //@ts-ignore
-  console.log(`${style[setColor]}%s`, `${text} + ${value}`);
+  console.log(`${style[setColor]}%s`, `${text} ${value}`);
 }

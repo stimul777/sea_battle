@@ -1,7 +1,6 @@
 import { setShot, msgShot } from '@/models/socket';
-import { shotProcessing } from '@/view/grid/events';
+import { shotProcessing, shotProcessingEnemy } from '@/view/grid/events';
 import { onConsole } from '@/helpers/console';
-import { sound } from '@/view/sound';
 
 class Player {
   victories: number;
@@ -31,7 +30,7 @@ class Player {
     this.myShips.splice(this.myShips.indexOf(value), 1);
   }
 
-  // выстрел по чужому кораблю
+  // выстрел по кораблю противника 🚢
   shotAtShip(value: string) {
     this.myShots.push(value);
     onConsole('green', 'Выстрел по противнику:', value);
@@ -40,27 +39,27 @@ class Player {
 
   // Выстрел в меня
   shotAtMe(value: string) {
-    console.log('value', value);
-    console.log('this.myShips', this.myShips);
+    console.log('Выстрел в меня, сектор:', value);
     const isCondition = this.myShips.includes(value);
     shotProcessing(isCondition, value);
 
     if (isCondition) {
       onConsole('green', 'В вас попали! Сектор:', value);
-      sound('hit');
       this.deleteShip(value);
       if (this.myShips.length === 0) this.endGame();
     } else {
-      sound('miss');
       onConsole('green', 'Противник промахнулся! Сектор:', value);
     }
 
-    msgShot(isCondition);
+    msgShot(isCondition, value);
   }
 
   // сообщение противнику об успехе\промахе
-  msgToPlayer(hit: boolean) {
-    hit ? onConsole('cyan', 'Вы попали!', '') : onConsole('cyan', 'Вы промахнулись!', '');
+  msgToPlayer(value: any) {
+    console.log('hit', value.hit);
+    console.log('hit-value', value.value);
+    value.hit ? onConsole('cyan', 'Вы попали! Сектор:', value) : onConsole('cyan', 'Вы промахнулись! Сектор:', value);
+    shotProcessingEnemy(value.hit, value.value);
   }
 
   endGame() {
