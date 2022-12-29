@@ -4,3 +4,8 @@ export type TShips = {
   destroyers: number;
   boats: number;
 };
+
+export type tShot = {
+  hit: boolean;
+  sector: string;
+};

@@ -1,5 +1,5 @@
 import { TShips } from '@/types/ships';
-import { onPier } from '@/view/pier/pier';
+import { onPier } from '@/app/view/pier/pier';
 
 class Ships {
   ships: number;

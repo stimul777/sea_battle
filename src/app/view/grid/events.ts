@@ -1,12 +1,12 @@
-import { sound } from '@/view/sound';
+import { sound } from '@/app/view/sound';
+import { tShot } from '@/types/ships';
 
 // обработка выстрела противником по квадрату
-function shotProcessing(isCondition: boolean, sector: string) {
+function getMyShot(value: tShot) {
   const $myGrid: HTMLElement = document.querySelector('.my-grid') as HTMLElement;
-  //@ts-ignore
-  const $ship = $myGrid?.querySelectorAll('.' + sector);
+  const $ship = $myGrid?.querySelectorAll('.' + value.sector);
 
-  if (isCondition) {
+  if (value.hit) {
     sound('hit');
     $ship[0].classList.add('square-hit-animation');
     setTimeout(() => {
@@ -24,12 +24,11 @@ function shotProcessing(isCondition: boolean, sector: string) {
 }
 
 // обработка моего выстрела по противнику
-function shotProcessingEnemy(hit: boolean, sector: string) {
+function getEnemyShot(value: tShot) {
   const $myGrid: HTMLElement = document.querySelector('.enemy-grid') as HTMLElement;
-  //@ts-ignore
-  const $ship = $myGrid?.querySelectorAll('.' + sector);
+  const $ship = $myGrid?.querySelectorAll('.' + value.sector);
 
-  if (hit) {
+  if (value.hit) {
     sound('hit');
     $ship[0].classList.add('square-hit-animation');
     setTimeout(() => {
@@ -46,4 +45,4 @@ function shotProcessingEnemy(hit: boolean, sector: string) {
   }
 }
 
-export { shotProcessing, shotProcessingEnemy };
+export { getMyShot, getEnemyShot };

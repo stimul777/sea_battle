@@ -1,6 +1,6 @@
-import { player } from '@/controllers/player';
-import { ships } from '@/controllers/ships';
-import { sound } from '@/view/sound';
+import { player } from '@/app/controllers/player';
+import { ships } from '@/app/controllers/ships';
+import { sound } from '@/app/view/sound';
 
 //Слушатель событий с сетки
 export function GridListener() {
@@ -8,7 +8,7 @@ export function GridListener() {
   const $enemyGrid = document.querySelector('.enemy-grid');
 
   const listenerMyGrid = () => {
-    $myGrid?.addEventListener('click', (event) => {
+    $myGrid?.addEventListener('click', (event: Event) => {
       event.stopPropagation();
       if (ships.ships === 0) return;
       //@ts-ignore
@@ -31,7 +31,7 @@ export function GridListener() {
   };
 
   const listenerEnemyGrid = () => {
-    $enemyGrid?.addEventListener('click', (event) => {
+    $enemyGrid?.addEventListener('click', (event: Event) => {
       event.stopPropagation();
       //@ts-ignore
       const elem = event.target.classList[0];

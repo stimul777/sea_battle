@@ -1,6 +1,6 @@
 import '@/assets/css/index.css';
-import '@/models/socket';
-import '@/view/index';
-import '@/view/pier/pier';
-import '@/view/grid/grid';
-import '@/controllers/gridListener';
+import '@/app/models/socket';
+import '@/app/view/index';
+import '@/app/view/pier/pier';
+import '@/app/view/grid/grid';
+import '@/app/controllers/gridListener';

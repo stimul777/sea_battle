@@ -1,6 +1,7 @@
-import { setShot, msgShot } from '@/models/socket';
-import { shotProcessing, shotProcessingEnemy } from '@/view/grid/events';
+import { setShot, msgShot } from '@/app/models/socket';
+import { getMyShot, getEnemyShot } from '@/app/view/grid/events';
 import { onConsole } from '@/helpers/console';
+import { tShot } from '@/types/ships';
 
 class Player {
   victories: number;
@@ -13,11 +14,6 @@ class Player {
     this.locationOfVessels = [];
     this.myShips = [];
     this.myShots = [];
-  }
-
-  setAbout() {
-    //@ts-ignore
-    const name = document.querySelector<HTMLDivElement>('.player-name-input');
   }
 
   // установка моих кораблей
@@ -38,28 +34,29 @@ class Player {
   }
 
   // Выстрел в меня
-  shotAtMe(value: string) {
-    console.log('Выстрел в меня, сектор:', value);
-    const isCondition = this.myShips.includes(value);
-    shotProcessing(isCondition, value);
+  shotAtMe(sector: string) {
+    const hit = this.myShips.includes(sector);
+    getMyShot({ hit, sector });
 
-    if (isCondition) {
-      onConsole('green', 'В вас попали! Сектор:', value);
-      this.deleteShip(value);
+    if (hit) {
+      onConsole('green', 'В вас попали! Сектор:', sector);
+      this.deleteShip(sector);
       if (this.myShips.length === 0) this.endGame();
     } else {
-      onConsole('green', 'Противник промахнулся! Сектор:', value);
+      onConsole('green', 'Противник промахнулся! Сектор:', sector);
     }
 
-    msgShot(isCondition, value);
+    msgShot({ hit, sector });
   }
 
   // сообщение противнику об успехе\промахе
-  msgToPlayer(value: any) {
+  msgToPlayer(value: tShot) {
     console.log('hit', value.hit);
-    console.log('hit-value', value.value);
-    value.hit ? onConsole('cyan', 'Вы попали! Сектор:', value) : onConsole('cyan', 'Вы промахнулись! Сектор:', value);
-    shotProcessingEnemy(value.hit, value.value);
+    console.log('hit-value', value.sector);
+    value.hit
+      ? onConsole('cyan', 'Вы попали! Сектор:', value.sector)
+      : onConsole('cyan', 'Вы промахнулись! Сектор:', value.sector);
+    getEnemyShot(value);
   }
 
   endGame() {

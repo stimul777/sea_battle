@@ -1,5 +1,5 @@
 //Построение игровой сетки
-import { ships } from '@/controllers/ships';
+import { ships } from '@/app/controllers/ships';
 
 export function onPier(): void {
   const $wrapper: HTMLElement = document.querySelector('.wrapper-pier') as HTMLElement;
