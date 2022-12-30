@@ -6,6 +6,9 @@ import { sound } from '@/app/view/sound';
 export function GridListener() {
   const $myGrid = document.querySelector('.my-grid');
   const $enemyGrid = document.querySelector('.enemy-grid');
+  const { setSound } = sound();
+
+  console.log('GridListener вызвана');
 
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: Event) => {
@@ -40,7 +43,7 @@ export function GridListener() {
       const elem = event.target.classList[0];
       //@ts-ignore
       event.target.classList.add('shot');
-      sound('shot');
+      setSound('shot');
       player.shotAtShip(elem);
     });
   };
