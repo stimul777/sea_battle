@@ -62,6 +62,9 @@
 }
 
 .square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 40px;
   background: #61C6FF;
   border: 1.38636px solid #FFFFFF;

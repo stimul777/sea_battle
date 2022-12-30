@@ -3,7 +3,7 @@ import { ships } from '@/app/controllers/ships';
 import { sound } from '@/app/view/sound';
 
 //Слушатель событий с сетки
-export function GridListener() {
+export function gridListener() {
   const $myGrid = document.querySelector('.my-grid');
   const $enemyGrid = document.querySelector('.enemy-grid');
   const { setSound } = sound();
@@ -52,4 +52,4 @@ export function GridListener() {
   listenerMyGrid();
 }
 
-GridListener();
+gridListener();

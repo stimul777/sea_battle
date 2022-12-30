@@ -1,6 +1,11 @@
 import '@/assets/css/index.css';
 import '@/app/models/socket';
 import '@/app/view/index';
-import '@/app/view/pier/pier';
+import { onPier } from '@/app/view/pier/pier';
+onPier();
+import { onViewPlayer } from '@/app/view/audioPlayer';
+onViewPlayer();
 import '@/app/view/grid/grid';
 import '@/app/controllers/gridListener';
+import { soundListener } from '@/app/controllers/soundListener';
+soundListener();

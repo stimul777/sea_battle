@@ -24,9 +24,18 @@ body {
 }
 
 
+
 #app {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  /* padding: 2rem; */
+  /* text-align: center; */
 }
+
+.wrapper-additions {
+  display: flex;
+  justify-content: space-between;
+
+  width: 420px;
+}
+
