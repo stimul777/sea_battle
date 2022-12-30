@@ -15,28 +15,28 @@ export function onGrid(value: 'my-grid' | 'enemy-grid') {
   container_numbers.classList.add('numbersLeft');
 
   container.append(container_numbers, container_letters, container_grid);
-  $wrapper?.append(container);
+  $wrapper.append(container);
 
-  for (const [index, letter] of letters.entries()) {
+  letters.forEach((letter: string, number: number) => {
     const containerLetters: HTMLElement = document.createElement('p') as HTMLElement;
     containerLetters.classList.add('letterOnTop');
-    containerLetters.innerText = letter;
+    containerLetters.innerText = String(letter);
     container_letters.append(containerLetters);
 
     const containerNumbers: HTMLElement = document.createElement('p') as HTMLElement;
     containerNumbers.classList.add('numberOnLeft');
-    containerNumbers.innerText = String(index + 1);
+    containerNumbers.innerText = String(number + 1);
     container_numbers.append(containerNumbers);
 
-    for (let i = 1; i <= letters.length; i++) {
+    // построение сетки внутри
+    letters.forEach((letter: string) => {
       const div: HTMLElement = document.createElement('div') as HTMLElement;
-      div.classList.add(letter + i);
-      div.classList.add(letter + i);
-      div.innerHTML = letter + i;
+      div.classList.add(letter + (number + 1));
+      div.innerHTML = letter + (number + 1);
       div.classList.add('square');
-      container_grid?.append(div);
-    }
-  }
+      container_grid.append(div);
+    });
+  });
 }
 
 onGrid('my-grid');

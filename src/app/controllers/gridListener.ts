@@ -34,6 +34,9 @@ export function GridListener() {
     $enemyGrid?.addEventListener('click', (event: Event) => {
       event.stopPropagation();
       //@ts-ignore
+      if (event.target.classList.contains('shot')) return;
+
+      //@ts-ignore
       const elem = event.target.classList[0];
       //@ts-ignore
       event.target.classList.add('shot');

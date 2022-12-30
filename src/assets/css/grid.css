@@ -11,6 +11,15 @@
   /* border: 1px solid orange;   */
 }
 
+.my-grid, .enemy-grid   {
+  display: grid;
+  grid-template-columns: repeat(10, 60px);
+  width: 600px;
+  height: 430px;
+  margin: 0 0 0 30px;
+  /* border: 1px solid red; */
+}
+
 .lettersTop {
   display: flex;
   justify-content: space-around;
@@ -52,26 +61,6 @@
   color: rgba(113, 124, 150, 0.7);
 }
 
-.enemy-grid_wrapper {
-  /* border: 1px solid blue; */
-
-}
-
-.my-grid, .enemy-grid   {
-  display: grid;
-  grid-template-columns: repeat(10, 60px);
-  width: 600px;
-  height: 430px;
-  margin: 0 0 0 30px;
-  /* border: 1px solid red; */
-}
-
-/* .enemy-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 60px);
-  margin: 0 0 0 50px;
-} */
-
 .square {
   height: 40px;
   background: #61C6FF;
@@ -92,6 +81,7 @@
   background: rgb(0, 0, 97);
 }
 
+/* animation */
 .square-fire-animation {
   background: url('/src/assets/animations/fire.gif');
   background-size: 60px 40px;
