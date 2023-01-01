@@ -1,6 +1,5 @@
-import { player } from '@/app/controllers/player';
-import { ships } from '@/app/controllers/ships';
-import { sound } from '@/app/view/sound';
+import { ships } from '@/app/controllers/ships_control';
+import { sound } from '@/app/view/sound_view';
 
 //Слушатель событий с сетки
 export function gridListener() {
@@ -22,14 +21,14 @@ export function gridListener() {
         //@ts-ignore
         event.target.classList.remove('active');
         ships.setShip('remove');
-        player.deleteShip(elem);
+        ships.deleteShip(elem);
         return;
       }
 
       //@ts-ignore
       event.target.classList.add('active');
       ships.setShip('add');
-      player.setShips(elem);
+      ships.setShips(elem);
     });
   };
 
@@ -44,7 +43,7 @@ export function gridListener() {
       //@ts-ignore
       event.target.classList.add('shot');
       setSound('shot');
-      player.shotAtShip(elem);
+      ships.shotAtShip(elem);
     });
   };
 

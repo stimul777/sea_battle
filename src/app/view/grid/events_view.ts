@@ -1,4 +1,4 @@
-import { sound } from '@/app/view/sound';
+import { sound } from '@/app/view/sound_view';
 import { tShot } from '@/types/ships';
 
 // обработка выстрела противником по квадрату

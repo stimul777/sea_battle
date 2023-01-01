@@ -1,7 +1,7 @@
 // API
 import { io } from 'socket.io-client';
 const socket = io();
-import { player } from '@/app/controllers/player';
+import { ships } from '@/app/controllers/ships_control';
 import { tShot } from '@/types/ships';
 
 // Выстрел по противнику
@@ -11,7 +11,7 @@ export function setShot(value: string): void {
 
 // Сокет инитится сразу и висит постоянно
 socket.on('shot-emit', function (value: string) {
-  player.shotAtMe(value);
+  ships.shotAtMe(value);
 });
 
 // Сообщить противнику о попадании или промахе
@@ -20,5 +20,5 @@ export function msgShot(value: tShot): void {
 }
 
 socket.on('msg-shot_listener_emit', function (value: tShot): void {
-  player.msgToPlayer(value);
+  ships.msgToPlayer(value);
 });

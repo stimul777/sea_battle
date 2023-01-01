@@ -1,22 +1,69 @@
-import { setShot, msgShot } from '@/app/models/socket';
-import { getMyShot, getEnemyShot } from '@/app/view/grid/events';
+import { TShips } from '@/types/ships';
+import { onPier } from '@/app/view/pier/pier_view';
+import { getMyShot, getEnemyShot } from '@/app/view/grid/events_view';
 import { onConsole } from '@/helpers/console';
 import { tShot } from '@/types/ships';
+import { setShot, msgShot } from '@/app/models/socket';
+import { player } from '@/app/controllers/player_control';
 
-class Player {
-  victories: number;
-  locationOfVessels: never[];
+class Ships {
+  ships: number;
+  shipsRang: TShips;
   myShips: string[];
   myShots: string[];
 
   constructor() {
-    this.victories = 0;
-    this.locationOfVessels = [];
+    this.ships = 20; //кол-во клеток для всех кораблей
+    this.shipsRang = {
+      battleship: 1,
+      cruisers: 2,
+      destroyers: 3,
+      boats: 4,
+    };
     this.myShips = [];
     this.myShots = [];
   }
 
-  // установка моих кораблей
+  setShip(value: 'add' | 'remove') {
+    switch (value) {
+      case 'add':
+        this.ships -= 1;
+        break;
+      case 'remove':
+        this.ships += 1;
+        break;
+    }
+
+    let rerender = false;
+    switch (this.ships) {
+      case 16:
+        this.shipsRang.battleship -= 1;
+        rerender = true;
+        break;
+      case 13:
+      case 10:
+        this.shipsRang.cruisers -= 1;
+        rerender = true;
+        break;
+      case 8:
+      case 6:
+      case 4:
+        this.shipsRang.destroyers -= 1;
+        rerender = true;
+        break;
+      case 3:
+      case 2:
+      case 1:
+      case 0:
+        this.shipsRang.boats -= 1;
+        rerender = true;
+        break;
+      default:
+    }
+
+    if (rerender) onPier(); //ререндер
+  }
+
   setShips(value: string) {
     this.myShips.push(value);
   }
@@ -41,7 +88,7 @@ class Player {
     if (hit) {
       onConsole('green', 'В вас попали! Сектор:', sector);
       this.deleteShip(sector);
-      if (this.myShips.length === 0) this.endGame();
+      if (this.myShips.length === 0) player.endGame();
     } else {
       onConsole('green', 'Противник промахнулся! Сектор:', sector);
     }
@@ -58,11 +105,7 @@ class Player {
       : onConsole('cyan', 'Вы промахнулись! Сектор:', value.sector);
     getEnemyShot(value);
   }
-
-  endGame() {
-    alert(`Вы проиграли!`);
-  }
 }
 
-const player = new Player();
-export { player };
+const ships = new Ships();
+export { ships };
