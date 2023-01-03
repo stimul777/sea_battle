@@ -1,5 +1,6 @@
-import { ships } from '@/app/controllers/ships_control';
 import { sound } from '@/app/view/sound_view';
+import { onValidations } from '@/app/view/grid/validationOfShips_view';
+import { ships } from '@/app/controllers/ships_control';
 
 //Слушатель событий с сетки
 export function gridListener() {
@@ -7,14 +8,24 @@ export function gridListener() {
   const $enemyGrid = document.querySelector('.enemy-grid');
   const { setSound } = sound();
 
-  console.log('GridListener вызвана');
+  let activeSector: string = ''; //активный сектор установки корабля
 
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: Event) => {
       event.stopPropagation();
+
       if (ships.ships === 0) return;
+
       //@ts-ignore
       const elem = event.target?.classList[0];
+
+      if (activeSector === '') {
+        activeSector = elem;
+      }
+
+      let validation = onValidations(elem, activeSector);
+      if (!validation) return;
+      // activeSector = '';
 
       //@ts-ignore
       if (event.target.classList.contains('active')) {

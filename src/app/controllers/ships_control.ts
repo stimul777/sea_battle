@@ -13,7 +13,7 @@ class Ships {
   myShots: string[];
 
   constructor() {
-    this.ships = 20; //кол-во клеток для всех кораблей
+    this.ships = 20; // кол-во доступных клеток для всех кораблей
     this.shipsRang = {
       battleship: 1,
       cruisers: 2,
@@ -64,6 +64,7 @@ class Ships {
     if (rerender) onPier(); //ререндер
   }
 
+  // установка моих кораблей
   setShips(value: string) {
     this.myShips.push(value);
   }
@@ -98,8 +99,6 @@ class Ships {
 
   // сообщение противнику об успехе\промахе
   msgToPlayer(value: tShot) {
-    console.log('hit', value.hit);
-    console.log('hit-value', value.sector);
     value.hit
       ? onConsole('cyan', 'Вы попали! Сектор:', value.sector)
       : onConsole('cyan', 'Вы промахнулись! Сектор:', value.sector);
