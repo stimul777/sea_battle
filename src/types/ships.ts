@@ -1,8 +1,15 @@
 export type TShips = {
-  battleship: number;
-  cruisers: number;
-  destroyers: number;
-  boats: number;
+  battleship: TShip;
+  cruisers: TShip;
+  destroyers: TShip;
+  boats: TShip;
+};
+
+export type TShip = {
+  quantity: number;
+  installed: boolean;
+  used: number;
+  coordinates: string[];
 };
 
 export type tShot = {

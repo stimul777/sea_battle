@@ -61,6 +61,7 @@
   color: rgba(113, 124, 150, 0.7);
 }
 
+/* Ships */
 .square {
   display: flex;
   align-items: center;
@@ -72,16 +73,16 @@
 }
 
 .active {
-  background-color: rgb(242, 151, 245);
+  background-color: rgb(68, 64, 68);
 }
 
-/* Удалить нахой(возможно) */
-.shot {
-  background-color: rgb(43, 132, 192);
-}
 
 .square-miss {
   background: rgb(0, 0, 97);
+}
+
+.ship-is-installed {
+    background: rgb(242, 151, 245);
 }
 
 /* animation */

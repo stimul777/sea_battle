@@ -1,4 +1,4 @@
-import { TShips } from '@/types/ships';
+import { TShips, TShip } from '@/types/ships';
 import { onPier } from '@/app/view/pier/pier_view';
 import { getMyShot, getEnemyShot } from '@/app/view/grid/events_view';
 import { onConsole } from '@/helpers/console';
@@ -15,17 +15,48 @@ class Ships {
   constructor() {
     this.ships = 20; // кол-во доступных клеток для всех кораблей
     this.shipsRang = {
-      battleship: 1,
-      cruisers: 2,
-      destroyers: 3,
-      boats: 4,
+      battleship: {
+        quantity: 1,
+        installed: false,
+        used: 0,
+        coordinates: [],
+      },
+      cruisers: {
+        quantity: 2,
+        installed: false,
+        used: 0,
+        coordinates: [],
+      },
+      destroyers: {
+        quantity: 3,
+        installed: false,
+        used: 0,
+        coordinates: [],
+      },
+      boats: {
+        quantity: 4,
+        installed: false,
+        used: 0,
+        coordinates: [],
+      },
     };
     this.myShips = [];
     this.myShots = [];
   }
 
-  setShip(value: 'add' | 'remove') {
-    switch (value) {
+  // Установка моих кораблей
+  setShips(sector: string, action: 'add' | 'remove'): any {
+    this.myShips.push(sector);
+
+    const setCounter = (ship: TShip) => {
+      ship.quantity -= 1;
+      ship.installed = true;
+      ship.used += 1;
+      onPier(); //ререндер
+      return ship;
+    };
+
+    switch (action) {
       case 'add':
         this.ships -= 1;
         break;
@@ -34,39 +65,43 @@ class Ships {
         break;
     }
 
-    let rerender = false;
-    switch (this.ships) {
-      case 16:
-        this.shipsRang.battleship -= 1;
-        rerender = true;
+    //это, конечно же, боль...
+    switch (true) {
+      // Battleship
+      case this.ships > 16:
+        this.shipsRang.battleship.coordinates.push(sector);
         break;
-      case 13:
-      case 10:
-        this.shipsRang.cruisers -= 1;
-        rerender = true;
+      case this.ships === 16:
+        this.shipsRang.battleship.coordinates.push(sector);
+        return setCounter(this.shipsRang.battleship);
+      // Cruisers
+      case this.ships === 13:
+      case this.ships === 10:
+        this.shipsRang.cruisers.coordinates.push(sector);
+        return setCounter(this.shipsRang.cruisers);
+      case this.ships < 16 && this.ships > 10:
+        this.shipsRang.cruisers.coordinates.push(sector);
         break;
-      case 8:
-      case 6:
-      case 4:
-        this.shipsRang.destroyers -= 1;
-        rerender = true;
+      // Destroyers
+      case this.ships === 8:
+      case this.ships === 6:
+      case this.ships === 4:
+        this.shipsRang.destroyers.coordinates.push(sector);
+        return setCounter(this.shipsRang.destroyers);
+      case this.ships < 10 && this.ships > 4:
+        this.shipsRang.destroyers.coordinates.push(sector);
         break;
-      case 3:
-      case 2:
-      case 1:
-      case 0:
-        this.shipsRang.boats -= 1;
-        rerender = true;
+      // Boats
+      case this.ships === 3:
+      case this.ships === 2:
+      case this.ships === 1:
+      case this.ships === 0:
+        this.shipsRang.boats.coordinates.push(sector);
+        return setCounter(this.shipsRang.boats);
+      case this.ships < 4 && this.ships > 0:
+        this.shipsRang.destroyers.coordinates.push(sector);
         break;
-      default:
     }
-
-    if (rerender) onPier(); //ререндер
-  }
-
-  // установка моих кораблей
-  setShips(value: string) {
-    this.myShips.push(value);
   }
 
   // удаление моих кораблей
