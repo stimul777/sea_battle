@@ -8,11 +8,16 @@ export type TShips = {
 export type TShip = {
   quantity: number;
   installed: boolean;
-  used: number;
+  injuriesCoordinates: [];
   coordinates: string[];
 };
 
 export type tShot = {
-  hit: boolean;
   sector: string;
+  hit: boolean;
+  conditionOfShip: {
+    injury: boolean;
+    killed: boolean;
+    sunkenShip: string[];
+  };
 };

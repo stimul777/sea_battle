@@ -18,25 +18,25 @@ class Ships {
       battleship: {
         quantity: 1,
         installed: false,
-        used: 0,
+        injuriesCoordinates: [],
         coordinates: [],
       },
       cruisers: {
         quantity: 2,
         installed: false,
-        used: 0,
+        injuriesCoordinates: [],
         coordinates: [],
       },
       destroyers: {
         quantity: 3,
         installed: false,
-        used: 0,
+        injuriesCoordinates: [],
         coordinates: [],
       },
       boats: {
         quantity: 4,
         installed: false,
-        used: 0,
+        injuriesCoordinates: [],
         coordinates: [],
       },
     };
@@ -51,7 +51,6 @@ class Ships {
     const setCounter = (ship: TShip) => {
       ship.quantity -= 1;
       ship.installed = true;
-      ship.used += 1;
       onPier(); //ререндер
       return ship;
     };
@@ -119,7 +118,34 @@ class Ships {
   // Выстрел в меня
   shotAtMe(sector: string) {
     const hit = this.myShips.includes(sector);
-    getMyShot({ hit, sector });
+
+    let conditionOfShip = {
+      injury: false, //ранен
+      killed: false, //убит
+      sunkenShip: [], // опиздюливаемый корабль
+    };
+
+    for (let key in this.shipsRang) {
+      //@ts-ignore
+      conditionOfShip.injury = this.shipsRang[key].coordinates.includes(sector);
+      if (conditionOfShip.injury) {
+        //@ts-ignore
+        this.shipsRang[key].injuriesCoordinates.push(sector);
+        //@ts-ignore
+        conditionOfShip.sunkenShip = this.shipsRang[key].injuriesCoordinates;
+        if (
+          //@ts-ignore
+          this.shipsRang[key].injuriesCoordinates.length === this.shipsRang[key].coordinates.length
+        ) {
+          conditionOfShip.injury = false;
+          conditionOfShip.killed = true;
+        }
+        break;
+      }
+    }
+
+    getMyShot({ hit, sector, conditionOfShip });
+    msgShot({ hit, sector, conditionOfShip });
 
     if (hit) {
       onConsole('green', 'В вас попали! Сектор:', sector);
@@ -128,8 +154,6 @@ class Ships {
     } else {
       onConsole('green', 'Противник промахнулся! Сектор:', sector);
     }
-
-    msgShot({ hit, sector });
   }
 
   // сообщение противнику об успехе\промахе

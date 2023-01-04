@@ -76,7 +76,6 @@
   background-color: rgb(68, 64, 68);
 }
 
-
 .square-miss {
   background: rgb(0, 0, 97);
 }
@@ -85,9 +84,13 @@
     background: rgb(242, 151, 245);
 }
 
+.square-injured {
+  outline: 1px solid rgb(233, 88, 88);
+}
+
 /* animation */
 .square-fire-animation {
-  background: url('/src/assets/animations/fire.gif');
+  background: url('/src/assets/animations/smoke.gif');
   background-size: 60px 40px;
   background-repeat: no-repeat;
   background-position: center;
@@ -101,8 +104,16 @@
 }
 
 .square-miss-animation {
-   background: url('/src/assets/animations/spray.gif');
+  background: url('/src/assets/animations/spray.gif');
   background-size: 60px 70px;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.square-killed {
+  background: url('/src/assets/animations/fire.gif');
+  background-size: 60px 70px;
+  background-repeat: no-repeat;
+  background-position: center;
+
 }

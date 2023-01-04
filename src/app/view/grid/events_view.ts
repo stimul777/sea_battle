@@ -5,18 +5,36 @@ import { tShot } from '@/types/ships';
 function getMyShot(value: tShot) {
   const $myGrid: HTMLElement = document.querySelector('.my-grid') as HTMLElement;
   const $ship = $myGrid?.querySelectorAll('.' + value.sector);
-  getMedia(value, $ship);
+  getMedia(value, $ship, $myGrid);
 }
 
 // обработка моего выстрела по противнику
+//! пока функция висит, но вообще она дубль, без доп функционала не нужна
 function getEnemyShot(value: tShot) {
   const $myGrid: HTMLElement = document.querySelector('.enemy-grid') as HTMLElement;
   const $ship = $myGrid?.querySelectorAll('.' + value.sector);
-  getMedia(value, $ship);
+  getMedia(value, $ship, $myGrid);
 }
 
-function getMedia(value: tShot, $ship: any) {
+// Установка визуала и аудио
+function getMedia(value: tShot, $ship: any, $myGrid: HTMLElement) {
   const { setSound } = sound();
+
+  if (value.conditionOfShip.injury) {
+    $ship[0].classList.add('square-injured');
+  }
+
+  // else {
+  //   $ship[0].classList.remove('square-injured');
+  // }
+
+  if (value.conditionOfShip.killed) {
+    for (let sector of value.conditionOfShip.sunkenShip) {
+      const $ship = $myGrid.querySelector('.' + sector);
+      $ship?.classList.add('square-killed');
+      $ship?.classList.remove('square-injured');
+    }
+  }
 
   if (value.hit) {
     setSound('hit');
