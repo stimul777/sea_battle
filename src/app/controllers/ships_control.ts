@@ -1,6 +1,7 @@
 import { TShips, TShip } from '@/types/ships';
 import { onPier } from '@/app/view/pier/pier_view';
 import { getMyShot, getEnemyShot } from '@/app/view/grid/events_view';
+import { toast } from '@/app/view/toast_view';
 import { onConsole } from '@/helpers/console';
 import { tShot } from '@/types/ships';
 import { setShot, msgShot } from '@/app/models/socket';
@@ -112,6 +113,7 @@ class Ships {
   shotAtShip(value: string) {
     this.myShots.push(value);
     onConsole('green', 'Выстрел по противнику:', value);
+    // toast.onToast('green', 'Выстрел по противнику: ' + value, true);
     setShot(value);
   }
 
@@ -148,19 +150,24 @@ class Ships {
     msgShot({ hit, sector, conditionOfShip });
 
     if (hit) {
-      onConsole('green', 'В вас попали! Сектор:', sector);
+      onConsole('green', 'В вас попали! Сектор: ', sector);
+      toast.onToast('red', 'В вас попали! Сектор: ' + sector, true);
+
       this.deleteShip(sector);
       if (this.myShips.length === 0) player.endGame();
     } else {
-      onConsole('green', 'Противник промахнулся! Сектор:', sector);
+      onConsole('green', 'Противник промахнулся! Сектор: ', sector);
+      toast.onToast('blue', 'Противник промахнулся! Сектор: ' + sector, true);
     }
   }
 
   // сообщение противнику об успехе\промахе
   msgToPlayer(value: tShot) {
     value.hit
-      ? onConsole('cyan', 'Вы попали! Сектор:', value.sector)
-      : onConsole('cyan', 'Вы промахнулись! Сектор:', value.sector);
+      ? (onConsole('cyan', 'Вы попали! Сектор:', value.sector),
+        toast.onToast('cyan', 'Вы попали! Сектор: ' + value.sector, true))
+      : (onConsole('cyan', 'Вы промахнулись! Сектор: ', value.sector),
+        toast.onToast('orange', 'Вы промахнулись! Сектор: ' + value.sector, true));
     getEnemyShot(value);
   }
 }

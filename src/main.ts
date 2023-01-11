@@ -9,3 +9,5 @@ import '@/app/view/grid/grid_view';
 import '@/app/controllers/gridListener_control';
 import { soundListener } from '@/app/controllers/soundListener_control';
 soundListener();
+
+// import { toast } from '@/app/view/toast_view';

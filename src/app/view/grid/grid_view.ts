@@ -32,7 +32,7 @@ export function onGrid(value: 'my-grid' | 'enemy-grid') {
     letters.forEach((letter: string) => {
       const div: HTMLElement = document.createElement('div') as HTMLElement;
       div.classList.add(letter + (number + 1));
-      div.innerHTML = letter + (number + 1);
+      div.textContent = letter + (number + 1);
       div.classList.add('square');
       container_grid.append(div);
     });

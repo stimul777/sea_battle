@@ -1,0 +1,27 @@
+
+.toast-wrapper {
+  position: absolute;
+  width: auto;
+  border-radius: 6px;
+  margin-top: 20px;
+  /* border: 1px solid red; */
+  bottom: 120px;
+}
+
+.toast_text {
+  padding: 5px;
+  margin: 0;
+  animation: fadeOut ease 3.5s;
+  -webkit-animation: fadeOut ease 3.5s;
+  -moz-animation: fadeOut ease 3.5s;
+  -o-animation: fadeOut ease 3.5s;
+  -ms-animation: fadeOut ease 3.5s;
+}
+
+
+
+@keyframes fadeOut {
+  0% {opacity:1;}
+  100% {opacity:0;}
+}
+
