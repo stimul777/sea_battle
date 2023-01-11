@@ -1,23 +1,24 @@
 //Валидация кораблей на сетке
 // true - валидация успешно прошла
 // false - ошибка
-export function onValidations(sector: string, activeSector: string): any {
-  const $sector_dom = document.querySelector('.' + sector);
-  const elem = $sector_dom?.classList[0];
+export function onValidations(sector: string, activeSector: string): boolean {
+  const $sector = document.querySelector('.' + sector);
+  const elem = $sector?.classList[0];
 
-  let res = true;
+  //const previousElem = $sector.previousSibling.classList[2]; //активен ли предыдущий соседний элемент
+  //const nextElem = $sector.nextSibling.classList[2]; //активен ли следующий соседний элемент
 
-  if (elem?.substring(0, 1) != activeSector.substring(0, 1)) {
-    res = false;
-  } else {
+  let res = false;
+
+  //сравнение по букве
+  if (elem?.substring(0, 1) === activeSector.substring(0, 1)) {
     res = true;
-    return res;
   }
 
-  if (elem?.substring(2, 1) != activeSector.substring(2, 1)) {
-    res = false;
-  } else {
+  // сравнение по номеру
+  if (elem?.substring(2, 1) === activeSector.substring(2, 1)) {
     res = true;
-    return res;
   }
+
+  return res;
 }
