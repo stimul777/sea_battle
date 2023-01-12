@@ -1,6 +1,8 @@
-//Функция для нарезки массива на чанки
+//*
+//* Функция для нарезки массива на чанки
+//*
 export function onRepacking(array: Array<any>, chunkSize: number): Array<any> {
-  const res = [];
+  const res: Array<any> = [];
 
   if (chunkSize === 0) res.push(array);
 

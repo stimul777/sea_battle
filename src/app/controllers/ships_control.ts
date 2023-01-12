@@ -123,37 +123,55 @@ class Ships {
     this.myShips.splice(this.myShips.indexOf(value), 1);
   }
 
-  // выстрел по кораблю противника 🚢
+  //*
+  //* 🚢 выстрел по кораблю противника
+  //*
   shotAtShip(value: string) {
     this.myShots.push(value);
     onConsole('green', 'Выстрел по противнику:', value);
-    // toast.onToast('green', 'Выстрел по противнику: ' + value, true);
     setShot(value);
   }
 
-  // Выстрел в меня
+  //! Выстрел в меня
   shotAtMe(sector: string) {
+    // корабль в текущей сесии
     let conditionOfShip = {
       injury: false, //ранен
       killed: false, //убит
-      sunkenShip: [], // опиздюливаемый корабль
+      sunkenShip: [], // опиздюливаемый корабль, его нужно закрасить
     };
 
     for (let key in this.shipsRang) {
       //@ts-ignore
-      conditionOfShip.injury = this.shipsRang[key].coordinates.includes(sector);
+      // определение попадания по кораблю
+      conditionOfShip.injury = this.shipsRang[key].coordinates
+        .flatMap((shipSector: string) => shipSector)
+        .includes(sector);
+
       if (conditionOfShip.injury) {
         //@ts-ignore
         this.shipsRang[key].injuriesCoordinates.push(sector);
         //@ts-ignore
-        conditionOfShip.sunkenShip = this.shipsRang[key].injuriesCoordinates;
-        if (
+        conditionOfShip.sunkenShip = this.shipsRang[key].injuriesCoordinates; //тут копятся много клеток, ошибки
+
+        // проверка на убийство корабля
+        //@ts-ignore
+        this.shipsRang[key].coordinates.forEach((arrSector) => {
+          console.log('arrSector.sort().toString()', arrSector.sort().toString());
           //@ts-ignore
-          this.shipsRang[key].injuriesCoordinates.length === this.shipsRang[key].coordinates.length
-        ) {
-          conditionOfShip.injury = false;
-          conditionOfShip.killed = true;
-        }
+
+          console.log('injuriesCoordinates', this.shipsRang[key].injuriesCoordinates.sort().toString());
+          console.log(
+            'сравнение',
+            //@ts-ignore
+            arrSector.sort().toString() === this.shipsRang[key].injuriesCoordinates.sort().toString(),
+          );
+          //@ts-ignore
+          if (arrSector.sort().toString() === this.shipsRang[key].injuriesCoordinates.sort().toString()) {
+            conditionOfShip.injury = false;
+            conditionOfShip.killed = true;
+          }
+        });
         break;
       }
     }
