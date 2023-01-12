@@ -31,8 +31,11 @@ function getMedia(value: tShot, $ship: any, $myGrid: HTMLElement) {
   if (value.conditionOfShip.killed) {
     for (let sector of value.conditionOfShip.sunkenShip) {
       const $ship = $myGrid.querySelector('.' + sector);
-      $ship?.classList.add('square-killed');
-      $ship?.classList.remove('square-injured');
+      if ($ship?.classList.contains('square-injured')) {
+        console.log('ранен ', sector);
+        $ship?.classList.add('square-killed');
+        $ship?.classList.remove('square-injured');
+      }
     }
   }
 

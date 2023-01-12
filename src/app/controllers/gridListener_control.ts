@@ -2,8 +2,6 @@ import { TShip } from '@/types/ships';
 import { sound } from '@/app/view/sound_view';
 import { onValidations } from '@/app/view/grid/validationOfShips_view';
 import { ships } from '@/app/controllers/ships_control';
-//!для тестов
-// import { toast } from '@/app/view/toast_view';
 
 //Слушатель событий с сетки
 export function gridListener() {
@@ -16,11 +14,6 @@ export function gridListener() {
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: Event) => {
       event.stopPropagation();
-
-      //!для тестов
-      // toast.onToast('green', 'корабль установлен-1', true);
-      // toast.onToast('green', 'корабль установлен-2', true);
-      // toast.onToast('green', 'корабль установлен-3', true);
 
       if (ships.ships === 0) return;
 
@@ -46,11 +39,12 @@ export function gridListener() {
         const isShipInstalled: TShip | undefined = ships.setShips(elem, 'add');
         if (isShipInstalled) {
           activeSector = ''; //удалить активный сектор;
-
-          for (let sector of isShipInstalled.coordinates) {
-            const elem = document.querySelector('.' + sector);
-            elem?.classList.add('ship-is-installed');
-          }
+          isShipInstalled.coordinates
+            .flatMap((f) => f)
+            .forEach((sector: string) => {
+              const elem = document.querySelector('.' + sector);
+              elem?.classList.add('ship-is-installed');
+            });
         }
       }
     });

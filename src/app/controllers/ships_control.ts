@@ -1,11 +1,15 @@
-import { TShips, TShip } from '@/types/ships';
+// view
 import { onPier } from '@/app/view/pier/pier_view';
 import { getMyShot, getEnemyShot } from '@/app/view/grid/events_view';
 import { toast } from '@/app/view/toast_view';
+// controllers
+import { player } from '@/app/controllers/player_control';
+
+import { TShips, TShip } from '@/types/ships';
 import { onConsole } from '@/helpers/console';
 import { tShot } from '@/types/ships';
 import { setShot, msgShot } from '@/app/models/socket';
-import { player } from '@/app/controllers/player_control';
+import { onRepacking } from '@/helpers/repacking';
 
 class Ships {
   ships: number;
@@ -67,40 +71,50 @@ class Ships {
 
     //это, конечно же, боль...
     switch (true) {
-      // Battleship
+      //* Battleship
       case this.ships > 16:
         this.shipsRang.battleship.coordinates.push(sector);
         break;
       case this.ships === 16:
         this.shipsRang.battleship.coordinates.push(sector);
+        this.shipsRang.battleship.coordinates = onRepacking(this.shipsRang.battleship.coordinates, 0);
         return setCounter(this.shipsRang.battleship);
-      // Cruisers
+      //* Cruisers
+      case this.ships === 15:
+      case this.ships === 14:
+      case this.ships === 12:
+      case this.ships === 11:
+        this.shipsRang.cruisers.coordinates.push(sector);
+        break;
       case this.ships === 13:
-      case this.ships === 10:
         this.shipsRang.cruisers.coordinates.push(sector);
         return setCounter(this.shipsRang.cruisers);
-      case this.ships < 16 && this.ships > 10:
+      case this.ships === 10:
         this.shipsRang.cruisers.coordinates.push(sector);
+        this.shipsRang.cruisers.coordinates = onRepacking(this.shipsRang.cruisers.coordinates, 3);
+        return setCounter(this.shipsRang.cruisers);
+      //* Destroyers
+      case this.ships === 10:
+      case this.ships === 9:
+      case this.ships === 7:
+      case this.ships === 5:
+        this.shipsRang.destroyers.coordinates.push(sector);
         break;
-      // Destroyers
-      case this.ships === 8:
-      case this.ships === 6:
-      case this.ships === 4:
+      case this.ships === 8 || this.ships === 6:
         this.shipsRang.destroyers.coordinates.push(sector);
         return setCounter(this.shipsRang.destroyers);
-      case this.ships < 10 && this.ships > 4:
+      case this.ships === 4:
         this.shipsRang.destroyers.coordinates.push(sector);
-        break;
-      // Boats
-      case this.ships === 3:
-      case this.ships === 2:
-      case this.ships === 1:
-      case this.ships === 0:
+        this.shipsRang.destroyers.coordinates = onRepacking(this.shipsRang.destroyers.coordinates, 2);
+        return setCounter(this.shipsRang.destroyers);
+      //* Boats
+      case this.ships < 4 && this.ships > 0:
         this.shipsRang.boats.coordinates.push(sector);
         return setCounter(this.shipsRang.boats);
-      case this.ships < 4 && this.ships > 0:
-        this.shipsRang.destroyers.coordinates.push(sector);
-        break;
+      case this.ships === 0:
+        this.shipsRang.boats.coordinates.push(sector);
+        this.shipsRang.boats.coordinates = onRepacking(this.shipsRang.boats.coordinates, 1);
+        return setCounter(this.shipsRang.boats);
     }
   }
 
@@ -119,8 +133,6 @@ class Ships {
 
   // Выстрел в меня
   shotAtMe(sector: string) {
-    const hit = this.myShips.includes(sector);
-
     let conditionOfShip = {
       injury: false, //ранен
       killed: false, //убит
@@ -146,12 +158,14 @@ class Ships {
       }
     }
 
+    const hit = this.myShips.includes(sector);
+
     getMyShot({ hit, sector, conditionOfShip });
     msgShot({ hit, sector, conditionOfShip });
 
     if (hit) {
-      onConsole('green', 'В вас попали! Сектор: ', sector);
-      toast.onToast('red', 'В вас попали! Сектор: ' + sector, true);
+      onConsole('green', 'в вас попали! Сектор: ', sector);
+      toast.onToast('red', 'в вас попали! Сектор: ' + sector, true);
 
       this.deleteShip(sector);
       if (this.myShips.length === 0) player.endGame();
