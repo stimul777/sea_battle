@@ -141,7 +141,8 @@ class Ships {
       sunkenShip: [], // опиздюливаемый корабль, его нужно закрасить
     };
 
-    for (let key in this.shipsRang) {
+    let key: TShip;
+    for (key in this.shipsRang) {
       //@ts-ignore
       // определение попадания по кораблю
       conditionOfShip.injury = this.shipsRang[key].coordinates
@@ -149,25 +150,18 @@ class Ships {
         .includes(sector);
 
       if (conditionOfShip.injury) {
-        //@ts-ignore
         this.shipsRang[key].injuriesCoordinates.push(sector);
-        //@ts-ignore
-        conditionOfShip.sunkenShip = this.shipsRang[key].injuriesCoordinates; //тут копятся много клеток, ошибки
+        conditionOfShip.sunkenShip = this.shipsRang[key].injuriesCoordinates;
 
         // проверка на убийство корабля
-        //@ts-ignore
-        this.shipsRang[key].coordinates.forEach((arrSector) => {
-          console.log('arrSector.sort().toString()', arrSector.sort().toString());
-          //@ts-ignore
+        this.shipsRang[key].coordinates.forEach((arrSector: string[]) => {
+          let match = arrSector.flatMap((elem: string) => {
+            let res = this.shipsRang[key].injuriesCoordinates.filter((m: string) => elem === m);
+            return res.sort();
+          });
 
-          console.log('injuriesCoordinates', this.shipsRang[key].injuriesCoordinates.sort().toString());
-          console.log(
-            'сравнение',
-            //@ts-ignore
-            arrSector.sort().toString() === this.shipsRang[key].injuriesCoordinates.sort().toString(),
-          );
-          //@ts-ignore
-          if (arrSector.sort().toString() === this.shipsRang[key].injuriesCoordinates.sort().toString()) {
+          if (arrSector.toString() === match.toString()) {
+            this.shipsRang[key].coordinates.splice(this.shipsRang[key].coordinates.indexOf(arrSector), 1);
             conditionOfShip.injury = false;
             conditionOfShip.killed = true;
           }
@@ -184,7 +178,6 @@ class Ships {
     if (hit) {
       onConsole('green', 'в вас попали! Сектор: ', sector);
       toast.onToast('red', 'в вас попали! Сектор: ' + sector, true);
-
       this.deleteShip(sector);
       if (this.myShips.length === 0) player.endGame();
     } else {
