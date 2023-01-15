@@ -2,6 +2,7 @@ import { TShip } from '@/types/ships';
 import { sound } from '@/app/view/sound_view';
 import { onValidations } from '@/app/view/grid/validationOfShips_view';
 import { ships } from '@/app/controllers/ships_control';
+import { colorGenerator } from '@/helpers/colorGenerator';
 
 //Слушатель событий с сетки
 export function gridListener() {
@@ -23,7 +24,11 @@ export function gridListener() {
       if (activeSector === '') activeSector = elem;
 
       let validation = onValidations(elem, activeSector);
-      if (!validation) return;
+      if (!validation) {
+        // activeSector === '';
+        return;
+      }
+      console.log('прошла');
 
       //установка/удаление корабля
       //@ts-ignore
@@ -38,12 +43,14 @@ export function gridListener() {
         event.target.classList.add('active');
         const isShipInstalled: TShip | undefined = ships.setShips(elem, 'add');
         if (isShipInstalled) {
+          let colorShip = colorGenerator();
           activeSector = ''; //удалить активный сектор;
           isShipInstalled.coordinates
             .flatMap((f) => f)
             .forEach((sector: string) => {
               const elem = document.querySelector('.' + sector);
               elem?.classList.add('ship-is-installed');
+              elem.style.backgroundColor = colorShip;
             });
         }
       }

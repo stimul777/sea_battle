@@ -1,5 +1,7 @@
 .wrapper-grid {
   display: flex;
+  user-select: none;
+  cursor: pointer;
 }
 
 .my-grid_wrapper, .enemy-grid_wrapper  {
