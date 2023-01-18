@@ -90,6 +90,13 @@
   outline: 1px solid rgb(233, 88, 88);
 }
 
+.error {
+  background-color: red;
+}
+
+
+
+
 /* animation */
 .square-fire-animation {
   background: url('/src/assets/animations/smoke.gif');

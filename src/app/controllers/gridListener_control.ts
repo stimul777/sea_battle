@@ -1,6 +1,7 @@
 import { TShip } from '@/types/ships';
 import { sound } from '@/app/view/sound_view';
 import { onValidations } from '@/app/view/grid/validationOfShips_view';
+import { getDeadZone } from '@/app/view/grid/deadZone';
 import { ships } from '@/app/controllers/ships_control';
 import { colorGenerator } from '@/helpers/colorGenerator';
 
@@ -13,33 +14,30 @@ export function gridListener() {
   let activeSector: string = ''; //активный сектор установки моего корабля
 
   const listenerMyGrid = () => {
-    $myGrid?.addEventListener('click', (event: Event) => {
+    $myGrid?.addEventListener('click', (event: any) => {
       event.stopPropagation();
-
       if (ships.ships === 0) return;
 
-      //@ts-ignore
       const elem = event.target?.classList[0];
 
       if (activeSector === '') activeSector = elem;
 
       let validation = onValidations(elem, activeSector);
       if (!validation) {
-        // activeSector === '';
+        event.target.classList.add('error');
+        setTimeout(() => {
+          event?.target?.classList.remove('error');
+        }, 500);
         return;
       }
-      console.log('прошла');
 
       //установка/удаление корабля
-      //@ts-ignore
       if (event.target.classList.contains('active')) {
-        //@ts-ignore
         event.target.classList.remove('active');
         ships.setShips(elem, 'remove');
         ships.deleteShip(elem);
         return;
       } else {
-        //@ts-ignore
         event.target.classList.add('active');
         const isShipInstalled: TShip | undefined = ships.setShips(elem, 'add');
         if (isShipInstalled) {
@@ -48,10 +46,12 @@ export function gridListener() {
           isShipInstalled.coordinates
             .flatMap((f) => f)
             .forEach((sector: string) => {
-              const elem = document.querySelector('.' + sector);
-              elem?.classList.add('ship-is-installed');
+              const elem = document.querySelector('.' + sector) as HTMLElement;
+              elem.classList.add('ship-is-installed');
               elem.style.backgroundColor = colorShip;
             });
+
+          getDeadZone(isShipInstalled.coordinates.flatMap((f) => f));
         }
       }
     });

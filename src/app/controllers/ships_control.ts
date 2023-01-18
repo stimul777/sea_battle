@@ -5,9 +5,8 @@ import { toast } from '@/app/view/toast_view';
 // controllers
 import { player } from '@/app/controllers/player_control';
 
-import { TShips, TShip } from '@/types/ships';
+import { TShips, TShip, tShot, tConditionOfShip } from '@/types/ships';
 import { onConsole } from '@/helpers/console';
-import { tShot } from '@/types/ships';
 import { setShot, msgShot } from '@/app/models/socket';
 import { onRepacking } from '@/helpers/repacking';
 
@@ -134,16 +133,15 @@ class Ships {
 
   //! Выстрел в меня
   shotAtMe(sector: string) {
-    // корабль в текущей сесии
-    let conditionOfShip = {
+    // корабль в текущей сессии
+    let conditionOfShip: tConditionOfShip = {
       injury: false, //ранен
       killed: false, //убит
       sunkenShip: [], // опиздюливаемый корабль, его нужно закрасить
     };
 
-    let key: TShip;
+    let key: keyof typeof this.shipsRang;
     for (key in this.shipsRang) {
-      //@ts-ignore
       // определение попадания по кораблю
       conditionOfShip.injury = this.shipsRang[key].coordinates
         .flatMap((shipSector: string) => shipSector)
@@ -151,21 +149,23 @@ class Ships {
 
       if (conditionOfShip.injury) {
         this.shipsRang[key].injuriesCoordinates.push(sector);
-        conditionOfShip.sunkenShip = this.shipsRang[key].injuriesCoordinates;
 
         // проверка на убийство корабля
-        this.shipsRang[key].coordinates.forEach((arrSector: string[]) => {
+        this.shipsRang[key].coordinates.forEach((arrSector: any) => {
           let match = arrSector.flatMap((elem: string) => {
             let res = this.shipsRang[key].injuriesCoordinates.filter((m: string) => elem === m);
             return res.sort();
           });
 
+          // все координаты ранения и самого коробля совпали - корабль убит
           if (arrSector.toString() === match.toString()) {
+            conditionOfShip.sunkenShip = match;
             this.shipsRang[key].coordinates.splice(this.shipsRang[key].coordinates.indexOf(arrSector), 1);
             conditionOfShip.injury = false;
             conditionOfShip.killed = true;
           }
         });
+
         break;
       }
     }

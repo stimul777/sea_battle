@@ -1,15 +1,28 @@
 //*
 //* Валидация кораблей на сетке
+//* sector - выбранный сектор
+//* selectedMainSector - сектор в котором расставляется корабль(самый первый квадрат)
 //* true - валидация успешно прошла
 //* false - ошибка
 //*
 export function onValidations(sector: string, selectedMainSector: string): boolean {
+  console.log('+sector', sector);
+  console.log('selectedMainSector', selectedMainSector);
   const $sector = document.querySelector('.' + sector);
   const elem = $sector?.classList[0];
-  const $grid = document.querySelector('.my-grid')?.children;
+  // const $grid = document.querySelector('.my-grid')?.children;
 
-  const previousElem = $sector?.previousSibling; //активен ли предыдущий соседний элемент
-  const nextElem = $sector?.nextSibling; //активен ли следующий соседний элемент
+  const getNearElement = (element: any, type: string) => {
+    if (type === 'previous') {
+      return element?.previousSibling;
+    }
+    if (type === 'next') {
+      return element?.nextSibling;
+    }
+  };
+
+  let previousElem = getNearElement($sector, 'previous'); //активен ли предыдущий соседний элемент
+  let nextElem = getNearElement($sector, 'next'); //активен ли следующий соседний элемент
 
   const sectors = {
     mainSector: {
@@ -24,21 +37,16 @@ export function onValidations(sector: string, selectedMainSector: string): boole
 
   let result = true;
 
-  //сравнение по букве
-  if (sectors.mainSector?.letter === sectors.activeSector.letter) {
-    console.log('letter');
-    result = true;
-  }
-
-  // сравнение по номеру
-  if (sectors.mainSector?.number === sectors.activeSector.number) {
-    console.log('number');
+  //сравнение по букве и по номеру
+  if (
+    sectors.mainSector?.letter === sectors.activeSector.letter ||
+    sectors.mainSector?.number === sectors.activeSector.number
+  ) {
     result = true;
   }
 
   //сравнение соседей
   if (previousElem?.classList?.contains('ship-is-installed') || nextElem?.classList?.contains('ship-is-installed')) {
-    console.log('сосед активен', previousElem, nextElem);
     result = false;
   }
 
@@ -54,8 +62,6 @@ export function onValidations(sector: string, selectedMainSector: string): boole
     elSearchPlus?.classList?.contains('ship-is-installed') ||
     elSearchMinus?.classList?.contains('ship-is-installed')
   ) {
-    console.log('zone+++', elSearchPlus);
-    console.log('zone---', elSearchMinus);
     result = false;
   }
 
