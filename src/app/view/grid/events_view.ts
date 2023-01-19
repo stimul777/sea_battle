@@ -1,4 +1,4 @@
-import { sound } from '@/app/view/sound_view';
+import { sound } from '@/app/controllers/sound_control';
 import { tShot } from '@/types/ships';
 
 // обработка выстрела противником по квадрату
@@ -18,7 +18,7 @@ function getEnemyShot(value: tShot) {
 
 // Установка визуала и аудио
 function getMedia(value: tShot, $ship: any, $myGrid: HTMLElement) {
-  const { setSound } = sound();
+  // const { setSound } = sound();
   $ship[0].classList.add('square-injured');
 
   console.log('value.conditionOfShip', value.conditionOfShip);
@@ -34,14 +34,14 @@ function getMedia(value: tShot, $ship: any, $myGrid: HTMLElement) {
   }
 
   if (value.hit) {
-    setSound('hit');
+    sound.setSound('hit');
     $ship[0].classList.add('square-hit-animation');
     setTimeout(() => {
       $ship[0].classList.remove('square-hit-animation');
     }, 600);
     $ship[0].classList.add('square-fire-animation');
   } else {
-    setSound('miss');
+    sound.setSound('miss');
     $ship[0].classList.add('square-miss-animation');
     setTimeout(() => {
       $ship[0].classList.remove('square-miss-animation');

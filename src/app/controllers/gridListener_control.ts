@@ -1,7 +1,7 @@
 import { TShip } from '@/types/ships';
-import { sound } from '@/app/view/sound_view';
+import { sound } from '@/app/controllers/sound_control';
 import { onValidations } from '@/app/view/grid/validationOfShips_view';
-import { getDeadZone } from '@/app/view/grid/deadZone';
+import { getDeadZone } from '@/app/view/grid/deadZone_view';
 import { ships } from '@/app/controllers/ships_control';
 import { colorGenerator } from '@/helpers/colorGenerator';
 
@@ -9,7 +9,6 @@ import { colorGenerator } from '@/helpers/colorGenerator';
 export function gridListener() {
   const $myGrid = document.querySelector('.my-grid');
   const $enemyGrid = document.querySelector('.enemy-grid');
-  const { setSound } = sound();
 
   let activeSector: string = ''; //активный сектор установки моего корабля
 
@@ -58,16 +57,14 @@ export function gridListener() {
   };
 
   const listenerEnemyGrid = () => {
-    $enemyGrid?.addEventListener('click', (event: Event) => {
+    $enemyGrid?.addEventListener('click', (event: any) => {
       event.stopPropagation();
-      //@ts-ignore
       if (event.target.classList.contains('shot')) return;
 
-      //@ts-ignore
       const elem = event.target.classList[0];
-      //@ts-ignore
+
       event.target.classList.add('shot');
-      setSound('shot');
+      sound.setSound('shot');
       ships.shotAtShip(elem);
     });
   };

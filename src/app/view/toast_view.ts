@@ -1,5 +1,6 @@
-//Всплывающие уведомления
-
+//*
+//* Всплывающие уведомления
+//*
 class Toast {
   $app: HTMLElement;
   wrapper: HTMLElement;
