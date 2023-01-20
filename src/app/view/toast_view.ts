@@ -19,7 +19,7 @@ class Toast {
     const text = document.createElement('p');
     text.classList.add('toast_text');
 
-    this.wrapper.append(text);
+    this.wrapper.prepend(text);
 
     text.textContent = `${value}`;
     text.style.color = `${color}`;

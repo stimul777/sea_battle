@@ -1,0 +1,8 @@
+.button-ready {
+  width: 150px;
+  height: 40px;
+  background-color:#7878e4;
+  border: none;
+  border: 1px solid rgb(110, 78, 224);
+  cursor: pointer;
+}

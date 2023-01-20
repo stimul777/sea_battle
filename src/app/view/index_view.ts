@@ -10,8 +10,8 @@ export function start() {
   // pier
   section_pier.classList.add('wrapper-pier');
 
-  //audio_player;
-  section_audioPlayer.classList.add('wrapper-audio_player');
+  //settings;
+  section_audioPlayer.classList.add('wrapper-settings');
 
   // add in grid
   section_grid.classList.add('wrapper-grid');

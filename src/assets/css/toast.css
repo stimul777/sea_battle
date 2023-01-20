@@ -2,10 +2,11 @@
 .toast-wrapper {
   position: absolute;
   width: auto;
+  max-height: 40px;
   border-radius: 6px;
   margin-top: 20px;
-  /* border: 1px solid red; */
   bottom: 120px;
+  overflow: auto;
 }
 
 .toast_text {
@@ -16,6 +17,10 @@
   -moz-animation: fadeOut ease 3.5s;
   -o-animation: fadeOut ease 3.5s;
   -ms-animation: fadeOut ease 3.5s;
+}
+
+.toast-wrapper::-webkit-scrollbar {
+  width: 0;
 }
 
 

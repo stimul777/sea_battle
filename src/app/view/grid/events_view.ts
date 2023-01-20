@@ -1,4 +1,6 @@
 import { sound } from '@/app/controllers/sound_control';
+import { onReadyBtn } from '@/app/view/readyBtn';
+
 import { tShot } from '@/types/ships';
 
 // обработка выстрела противником по квадрату
@@ -18,10 +20,7 @@ function getEnemyShot(value: tShot) {
 
 // Установка визуала и аудио
 function getMedia(value: tShot, $ship: any, $myGrid: HTMLElement) {
-  // const { setSound } = sound();
   $ship[0].classList.add('square-injured');
-
-  console.log('value.conditionOfShip', value.conditionOfShip);
 
   if (value.conditionOfShip.killed) {
     for (let sector of value.conditionOfShip.sunkenShip) {
@@ -50,4 +49,8 @@ function getMedia(value: tShot, $ship: any, $myGrid: HTMLElement) {
   }
 }
 
-export { getMyShot, getEnemyShot };
+function startGame() {
+  onReadyBtn();
+}
+
+export { getMyShot, getEnemyShot, startGame };

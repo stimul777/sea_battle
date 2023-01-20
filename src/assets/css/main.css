@@ -7,6 +7,8 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
+    /* background-color: #18afca81; */
+
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -32,10 +34,24 @@ body {
   /* text-align: center; */
 }
 
+.wrapper-settings{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  /* justify-content:flex-start;
+  align-items: center; */
+  width: 200px;
+  border-radius: 6px;
+  border: 1px solid #61C6FF;
+}
+
+
 .wrapper-additions {
   display: flex;
   justify-content: space-between;
-
   width: 420px;
 }
+
+
 

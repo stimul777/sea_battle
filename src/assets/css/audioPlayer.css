@@ -1,11 +1,6 @@
-.wrapper-audio_player{
-  display: flex;
-  /* justify-content:flex-start; */
-  /* align-items: center; */
-  width: 200px;
 
-  border-radius: 6px;
-  border: 1px solid #61C6FF;
+.container-sound {
+  display: flex;
 }
 
 .additions-icon_play {

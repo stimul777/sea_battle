@@ -4,10 +4,13 @@ import { sound } from '@/app/controllers/sound_control';
 //* Виджет аудио плеера
 //*
 export function onViewPlayer() {
-  const $wrapper: HTMLElement = document.querySelector('.wrapper-audio_player') as HTMLElement;
+  const $wrapper: HTMLElement = document.querySelector('.wrapper-settings') as HTMLElement;
 
-  const iconPlay = document.createElement('div');
-  const iconStop = document.createElement('div');
+  const container_sound: HTMLElement = document.createElement('div');
+  const iconPlay: HTMLElement = document.createElement('div');
+  const iconStop: HTMLElement = document.createElement('div');
+
+  container_sound.classList.add('container-sound');
 
   iconPlay.classList.add('additions-icon_play');
   iconStop.classList.add('additions-icon_stop');
@@ -19,7 +22,9 @@ export function onViewPlayer() {
   text.classList.add('additions-icon_text');
   text.textContent = 'sound on/off';
 
-  $wrapper.prepend(iconPlay, iconStop, text);
+  container_sound.prepend(iconPlay, iconStop, text);
+
+  $wrapper.prepend(container_sound);
 }
 
 //*

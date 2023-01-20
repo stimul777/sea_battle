@@ -13,6 +13,10 @@
   /* border: 1px solid orange;   */
 }
 
+.enemy-grid_wrapper  {
+  display: none;
+}
+
 .my-grid, .enemy-grid   {
   display: grid;
   grid-template-columns: repeat(10, 60px);

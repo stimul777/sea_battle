@@ -1,6 +1,6 @@
 // view
 import { onPier } from '@/app/view/pier/pier_view';
-import { getMyShot, getEnemyShot } from '@/app/view/grid/events_view';
+import { getMyShot, getEnemyShot, startGame } from '@/app/view/grid/events_view';
 import { toast } from '@/app/view/toast_view';
 // controllers
 import { player } from '@/app/controllers/player_control';
@@ -48,7 +48,9 @@ class Ships {
     this.myShots = [];
   }
 
-  // Установка моих кораблей
+  //*
+  //* 🚢 Установка моих кораблей
+  //*
   setShips(sector: string, action: 'add' | 'remove'): any {
     this.myShips.push(sector);
 
@@ -75,6 +77,7 @@ class Ships {
         this.shipsRang.battleship.coordinates.push(sector);
         break;
       case this.ships === 16:
+        startGame();
         this.shipsRang.battleship.coordinates.push(sector);
         this.shipsRang.battleship.coordinates = onRepacking(this.shipsRang.battleship.coordinates, 0);
         return setCounter(this.shipsRang.battleship);
@@ -131,7 +134,9 @@ class Ships {
     setShot(value);
   }
 
-  //! Выстрел в меня
+  //*
+  //* 💥 выстрел в меня
+  //*
   shotAtMe(sector: string) {
     // корабль в текущей сессии
     let conditionOfShip: tConditionOfShip = {
@@ -186,7 +191,9 @@ class Ships {
     }
   }
 
-  // сообщение противнику об успехе\промахе
+  //*
+  //* ✉️ сообщение противнику об успехе\промахе
+  //*
   msgToPlayer(value: tShot) {
     value.hit
       ? (onConsole('cyan', 'Вы попали! Сектор:', value.sector),
