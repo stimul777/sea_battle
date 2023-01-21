@@ -11,13 +11,13 @@ import { setShot, msgShot } from '@/app/models/socket';
 import { onRepacking } from '@/helpers/repacking';
 
 class Ships {
-  ships: number;
+  shipsCounter: number;
   shipsRang: TShips;
-  myShips: string[];
+  // myShips: string[];
   myShots: string[];
 
   constructor() {
-    this.ships = 20; // кол-во доступных клеток для всех кораблей
+    this.shipsCounter = 20; // кол-во доступных клеток для всех кораблей
     this.shipsRang = {
       battleship: {
         quantity: 1,
@@ -44,15 +44,16 @@ class Ships {
         coordinates: [],
       },
     };
-    this.myShips = [];
+    // this.myShips = [];
     this.myShots = [];
   }
 
   //*
   //* 🚢 Установка моих кораблей
   //*
-  setShips(sector: string, action: 'add' | 'remove'): any {
-    this.myShips.push(sector);
+  setShips(sector: string): any {
+    this.shipsCounter -= 1;
+    // this.myShips.push(sector);
 
     const setCounter = (ship: TShip) => {
       ship.quantity -= 1;
@@ -61,59 +62,50 @@ class Ships {
       return ship;
     };
 
-    switch (action) {
-      case 'add':
-        this.ships -= 1;
-        break;
-      case 'remove':
-        this.ships += 1;
-        break;
-    }
-
     //это, конечно же, боль...
     switch (true) {
       //* Battleship
-      case this.ships > 16:
+      case this.shipsCounter > 16:
         this.shipsRang.battleship.coordinates.push(sector);
         break;
-      case this.ships === 16:
+      case this.shipsCounter === 16:
         startGame();
         this.shipsRang.battleship.coordinates.push(sector);
         this.shipsRang.battleship.coordinates = onRepacking(this.shipsRang.battleship.coordinates, 0);
         return setCounter(this.shipsRang.battleship);
       //* Cruisers
-      case this.ships === 15:
-      case this.ships === 14:
-      case this.ships === 12:
-      case this.ships === 11:
+      case this.shipsCounter === 15:
+      case this.shipsCounter === 14:
+      case this.shipsCounter === 12:
+      case this.shipsCounter === 11:
         this.shipsRang.cruisers.coordinates.push(sector);
         break;
-      case this.ships === 13:
+      case this.shipsCounter === 13:
         this.shipsRang.cruisers.coordinates.push(sector);
         return setCounter(this.shipsRang.cruisers);
-      case this.ships === 10:
+      case this.shipsCounter === 10:
         this.shipsRang.cruisers.coordinates.push(sector);
         this.shipsRang.cruisers.coordinates = onRepacking(this.shipsRang.cruisers.coordinates, 3);
         return setCounter(this.shipsRang.cruisers);
       //* Destroyers
-      case this.ships === 10:
-      case this.ships === 9:
-      case this.ships === 7:
-      case this.ships === 5:
+      case this.shipsCounter === 10:
+      case this.shipsCounter === 9:
+      case this.shipsCounter === 7:
+      case this.shipsCounter === 5:
         this.shipsRang.destroyers.coordinates.push(sector);
         break;
-      case this.ships === 8 || this.ships === 6:
+      case this.shipsCounter === 8 || this.shipsCounter === 6:
         this.shipsRang.destroyers.coordinates.push(sector);
         return setCounter(this.shipsRang.destroyers);
-      case this.ships === 4:
+      case this.shipsCounter === 4:
         this.shipsRang.destroyers.coordinates.push(sector);
         this.shipsRang.destroyers.coordinates = onRepacking(this.shipsRang.destroyers.coordinates, 2);
         return setCounter(this.shipsRang.destroyers);
       //* Boats
-      case this.ships < 4 && this.ships > 0:
+      case this.shipsCounter < 4 && this.shipsCounter > 0:
         this.shipsRang.boats.coordinates.push(sector);
         return setCounter(this.shipsRang.boats);
-      case this.ships === 0:
+      case this.shipsCounter === 0:
         this.shipsRang.boats.coordinates.push(sector);
         this.shipsRang.boats.coordinates = onRepacking(this.shipsRang.boats.coordinates, 1);
         return setCounter(this.shipsRang.boats);
@@ -122,7 +114,16 @@ class Ships {
 
   // удаление моих кораблей
   deleteShip(value: string) {
-    this.myShips.splice(this.myShips.indexOf(value), 1);
+    this.shipsCounter += 1;
+
+    //! Если корабль не установлен, он еще не разбит на чанки
+    let key: keyof typeof this.shipsRang;
+    for (key in this.shipsRang) {
+      if (this.shipsRang[key].coordinates.includes(value)) {
+        this.shipsRang[key].coordinates.splice(this.shipsRang[key].coordinates.indexOf(value), 1);
+        break;
+      }
+    }
   }
 
   //*
@@ -146,6 +147,7 @@ class Ships {
     };
 
     let key: keyof typeof this.shipsRang;
+    let hit: boolean = false;
     for (key in this.shipsRang) {
       // определение попадания по кораблю
       conditionOfShip.injury = this.shipsRang[key].coordinates
@@ -154,6 +156,7 @@ class Ships {
 
       if (conditionOfShip.injury) {
         this.shipsRang[key].injuriesCoordinates.push(sector);
+        hit = true;
 
         // проверка на убийство корабля
         this.shipsRang[key].coordinates.forEach((arrSector: any) => {
@@ -162,7 +165,7 @@ class Ships {
             return res.sort();
           });
 
-          // все координаты ранения и самого коробля совпали - корабль убит
+          // все координаты ранения и самого корабля совпали - корабль убит
           if (arrSector.toString() === match.toString()) {
             conditionOfShip.sunkenShip = match;
             this.shipsRang[key].coordinates.splice(this.shipsRang[key].coordinates.indexOf(arrSector), 1);
@@ -170,12 +173,9 @@ class Ships {
             conditionOfShip.killed = true;
           }
         });
-
         break;
       }
     }
-
-    const hit = this.myShips.includes(sector);
 
     getMyShot({ hit, sector, conditionOfShip });
     msgShot({ hit, sector, conditionOfShip });
@@ -183,11 +183,19 @@ class Ships {
     if (hit) {
       onConsole('green', 'в вас попали! Сектор: ', sector);
       toast.onToast('red', 'в вас попали! Сектор: ' + sector, true);
+
+      //! скорее всего удаляем уже удаленное выше
       this.deleteShip(sector);
-      if (this.myShips.length === 0) player.endGame();
+
+      //!НЕ РАБОТАЕТ!
+      // for (key in this.shipsRang) {
+      //   if (this.shipsRang[key].coordinates.length) break;
+      //   player.endGame();
+      //   break;
+      // }
     } else {
       onConsole('green', 'Противник промахнулся! Сектор: ', sector);
-      toast.onToast('blue', 'Противник промахнулся! Сектор: ' + sector, true);
+      toast.onToast('cyan', 'Противник промахнулся! Сектор: ' + sector, true);
     }
   }
 

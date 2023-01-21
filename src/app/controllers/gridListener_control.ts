@@ -15,7 +15,7 @@ export function gridListener() {
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: any) => {
       event.stopPropagation();
-      if (ships.ships === 0) return;
+      if (ships.shipsCounter === 0) return;
 
       const elem = event.target?.classList[0];
 
@@ -30,15 +30,17 @@ export function gridListener() {
         return;
       }
 
-      //установка/удаление корабля
+      //установка/удаление сектора корабля
       if (event.target.classList.contains('active')) {
         event.target.classList.remove('active');
-        ships.setShips(elem, 'remove');
+        // ships.setShips(elem, 'remove');
         ships.deleteShip(elem);
         return;
       } else {
         event.target.classList.add('active');
-        const isShipInstalled: TShip | undefined = ships.setShips(elem, 'add');
+        const isShipInstalled: TShip | undefined = ships.setShips(elem);
+        console.log('isShipInstalled', isShipInstalled);
+
         if (isShipInstalled) {
           let colorShip = colorGenerator();
           activeSector = ''; //удалить активный сектор;
