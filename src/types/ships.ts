@@ -27,3 +27,5 @@ export type tConditionOfShip = {
   killed: boolean; //убит
   sunkenShip: string[];
 };
+
+export type TDirectionShip = 'vertical' | 'horizontal' | '';

@@ -2,15 +2,15 @@
 //* Валидация кораблей на сетке
 //* sector - выбранный сектор
 //* selectedMainSector - сектор в котором расставляется корабль(самый первый квадрат)
+//* directionShip - направление установки корабля
 //* true - валидация успешно прошла
 //* false - ошибка
 //*
-export function onValidations(sector: string, selectedMainSector: string): boolean {
-  console.log('+sector', sector);
-  console.log('selectedMainSector', selectedMainSector);
+export function onValidations(sector: string, selectedMainSector: string, directionShip: string): boolean {
+  if (directionShip === '') return true;
+
   const $sector = document.querySelector('.' + sector);
   const elem = $sector?.classList[0];
-  // const $grid = document.querySelector('.my-grid')?.children;
 
   const getNearElement = (element: any, type: string) => {
     if (type === 'previous') {
@@ -35,34 +35,33 @@ export function onValidations(sector: string, selectedMainSector: string): boole
     },
   };
 
-  let result = true;
+  let result = false;
 
-  //сравнение по букве и по номеру
-  if (
-    sectors.mainSector?.letter === sectors.activeSector.letter ||
-    sectors.mainSector?.number === sectors.activeSector.number
-  ) {
-    result = true;
-  }
+  switch (directionShip) {
+    case 'vertical':
+      //!не дает ставить по вертикали через клетку, но по диагонали ставится
+      const elSearchPlus = document.querySelector(
+        '.' + sectors.activeSector.letter + (Number(sectors.activeSector.number) + 1),
+      );
+      const elSearchMinus = document.querySelector(
+        '.' + sectors.activeSector.letter + (Number(sectors.activeSector.number) - 1),
+      );
 
-  //сравнение соседей
-  if (previousElem?.classList?.contains('ship-is-installed') || nextElem?.classList?.contains('ship-is-installed')) {
-    result = false;
-  }
-
-  //!не дает ставить по вертикали через клетку, но по диагонали ставится
-  const elSearchPlus = document.querySelector(
-    '.' + sectors.activeSector.letter + (Number(sectors.activeSector.number) + 1),
-  );
-  const elSearchMinus = document.querySelector(
-    '.' + sectors.activeSector.letter + (Number(sectors.activeSector.number) - 1),
-  );
-
-  if (
-    elSearchPlus?.classList?.contains('ship-is-installed') ||
-    elSearchMinus?.classList?.contains('ship-is-installed')
-  ) {
-    result = false;
+      if (
+        (sectors.mainSector?.letter === sectors.activeSector.letter && elSearchPlus?.classList?.contains('active')) ||
+        elSearchMinus?.classList?.contains('active')
+      ) {
+        result = true;
+      }
+      break;
+    case 'horizontal':
+      if (
+        (sectors.mainSector?.number === sectors.activeSector.number && previousElem?.classList?.contains('active')) ||
+        nextElem?.classList?.contains('active')
+      ) {
+        result = true;
+      }
+      break;
   }
 
   return result;

@@ -187,12 +187,17 @@ class Ships {
       //! скорее всего удаляем уже удаленное выше
       this.deleteShip(sector);
 
-      //!НЕ РАБОТАЕТ!
-      // for (key in this.shipsRang) {
-      //   if (this.shipsRang[key].coordinates.length) break;
-      //   player.endGame();
-      //   break;
-      // }
+      let isFinishGame = false;
+      for (key in this.shipsRang) {
+        if (this.shipsRang[key].coordinates.length) {
+          isFinishGame = false;
+          break;
+        } else {
+          isFinishGame = true;
+        }
+      }
+
+      if (isFinishGame) player.endGame();
     } else {
       onConsole('green', 'Противник промахнулся! Сектор: ', sector);
       toast.onToast('cyan', 'Противник промахнулся! Сектор: ' + sector, true);
