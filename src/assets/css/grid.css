@@ -96,8 +96,15 @@
 
 .error {
   background-color: red;
+
 }
 
+.safeZone {
+  background: url('/src/assets/icons/safeZone.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #61C6FF;
+}
 
 
 

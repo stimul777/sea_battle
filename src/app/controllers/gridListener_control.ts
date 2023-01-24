@@ -52,7 +52,6 @@ export function gridListener() {
 
         if (isShipInstalled) {
           let colorShip = colorGenerator();
-          activeSector = directionShip = ''; //удалить активный сектор;
           isShipInstalled.coordinates
             .flatMap((f) => f)
             .forEach((sector: string) => {
@@ -61,7 +60,13 @@ export function gridListener() {
               elem.style.backgroundColor = colorShip;
             });
 
-          getDeadZone(isShipInstalled.coordinates.flatMap((f) => f));
+          getDeadZone(
+            isShipInstalled.coordinates.flatMap((f) => f),
+            activeSector,
+            directionShip,
+          );
+
+          activeSector = directionShip = ''; //удалить активный сектор;
         }
       }
     });

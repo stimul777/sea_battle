@@ -54,6 +54,7 @@ export function onValidations(sector: string, selectedMainSector: string, direct
         result = true;
       }
       break;
+
     case 'horizontal':
       if (
         (sectors.mainSector?.number === sectors.activeSector.number && previousElem?.classList?.contains('active')) ||
