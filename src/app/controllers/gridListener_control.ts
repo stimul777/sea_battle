@@ -1,7 +1,7 @@
 import { TShip, TDirectionShip } from '@/types/ships';
 import { sound } from '@/app/controllers/sound_control';
 import { onValidations } from '@/app/view/grid/validationOfShips_view';
-import { getDeadZone } from '@/app/view/grid/deadZone_view';
+// import { getDeadZone } from '@/app/view/grid/deadZone_view';
 import { ships } from '@/app/controllers/ships_control';
 import { colorGenerator } from '@/helpers/colorGenerator';
 
@@ -16,7 +16,7 @@ export function gridListener() {
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: any) => {
       event.stopPropagation();
-      if (ships.shipsCounter === 0) return;
+      if (ships.shipsCounter === 0 || event.target.classList.contains('safeZone')) return;
       const elem = event.target?.classList[0];
 
       if (activeSector === '') activeSector = elem;
@@ -60,11 +60,11 @@ export function gridListener() {
               elem.style.backgroundColor = colorShip;
             });
 
-          getDeadZone(
-            isShipInstalled.coordinates.flatMap((f) => f),
-            activeSector,
-            directionShip,
-          );
+          // getDeadZone(
+          //   isShipInstalled.coordinates.flatMap((f) => f),
+          //   activeSector,
+          //   directionShip,
+          // );
 
           activeSector = directionShip = ''; //удалить активный сектор;
         }

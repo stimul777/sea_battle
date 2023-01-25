@@ -39,7 +39,6 @@ export function onValidations(sector: string, selectedMainSector: string, direct
 
   switch (directionShip) {
     case 'vertical':
-      //!не дает ставить по вертикали через клетку, но по диагонали ставится
       const elSearchPlus = document.querySelector(
         '.' + sectors.activeSector.letter + (Number(sectors.activeSector.number) + 1),
       );

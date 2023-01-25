@@ -28,14 +28,17 @@ io.on('connection', (socket) => {
 
   // выстрел по противнику
   socket.on('shot', (value) => {
-    console.log('ВЫСТРЕЛ! ON', value);
     socket.broadcast.emit('shot-emit', value);
   });
 
   // Сообщение противнику о попадании\промахе
   socket.on('msg-shot_listener', (value) => {
-    console.log('value server!!!!!!!!', value);
     socket.broadcast.emit('msg-shot_listener_emit', value);
+  });
+
+  // Сообщение противнику о победе
+  socket.on('msg-finish_listener', (value) => {
+    socket.broadcast.emit('msg-finish_emit', value);
   });
 
   socket.on('disconnect', (value) => {

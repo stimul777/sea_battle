@@ -13,7 +13,6 @@ import { onRepacking } from '@/helpers/repacking';
 class Ships {
   shipsCounter: number;
   shipsRang: TShips;
-  // myShips: string[];
   myShots: string[];
 
   constructor() {
@@ -44,7 +43,6 @@ class Ships {
         coordinates: [],
       },
     };
-    // this.myShips = [];
     this.myShots = [];
   }
 
@@ -197,7 +195,7 @@ class Ships {
         }
       }
 
-      if (isFinishGame) player.endGame();
+      if (isFinishGame) player.endGame('loss');
     } else {
       onConsole('green', 'Противник промахнулся! Сектор: ', sector);
       toast.onToast('cyan', 'Противник промахнулся! Сектор: ' + sector, true);
