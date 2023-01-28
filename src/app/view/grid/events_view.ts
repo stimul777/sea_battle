@@ -1,5 +1,6 @@
 import { sound } from '@/app/controllers/sound_control';
-import { onReadyBtn } from '@/app/view/readyBtn';
+import { onReadyBtn } from '@/app/view/readyBtn_view';
+import { setFrozenSwitch } from '@/app/view/grid/frozenGrid';
 
 import { tShot } from '@/types/ships';
 
@@ -8,6 +9,7 @@ function getMyShot(value: tShot) {
   const $myGrid: HTMLElement = document.querySelector('.my-grid') as HTMLElement;
   const $ship = $myGrid?.querySelectorAll('.' + value.sector);
   getMedia(value, $ship, $myGrid);
+  setFrozenSwitch(true);
 }
 
 // обработка моего выстрела по противнику
@@ -16,6 +18,7 @@ function getEnemyShot(value: tShot) {
   const $myGrid: HTMLElement = document.querySelector('.enemy-grid') as HTMLElement;
   const $ship = $myGrid?.querySelectorAll('.' + value.sector);
   getMedia(value, $ship, $myGrid);
+  setFrozenSwitch(false);
 }
 
 // Установка визуала и аудио

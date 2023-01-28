@@ -47,7 +47,9 @@ export function onValidations(sector: string, selectedMainSector: string, direct
       );
 
       if (
-        (sectors.mainSector?.letter === sectors.activeSector.letter && elSearchPlus?.classList?.contains('active')) ||
+        (sectors.mainSector?.letter === sectors.activeSector.letter &&
+          elSearchMinus &&
+          elSearchPlus?.classList?.contains('active')) ||
         elSearchMinus?.classList?.contains('active')
       ) {
         result = true;

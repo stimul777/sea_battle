@@ -1,3 +1,5 @@
+import { setFrozenGrid } from '@/app/view/grid/frozenGrid';
+
 export function onReadyBtn() {
   const $wrapper: HTMLElement = document.querySelector('.wrapper-settings') as HTMLElement;
 
@@ -18,5 +20,6 @@ function startGame(button: HTMLElement) {
     const enemyWrapper: HTMLElement = document.querySelector('.enemy-grid_wrapper') as HTMLElement;
     button.style.display = 'none';
     enemyWrapper.style.display = 'flex';
+    setFrozenGrid();
   });
 }

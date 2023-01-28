@@ -8,6 +8,7 @@ import { colorGenerator } from '@/helpers/colorGenerator';
 //Слушатель событий с сетки
 export function gridListener() {
   const $myGrid = document.querySelector('.my-grid');
+  // const $myGridSectors = $myGrid?.childNodes;
   const $enemyGrid = document.querySelector('.enemy-grid');
 
   let activeSector: string = ''; //активный сектор установки моего корабля
@@ -15,8 +16,13 @@ export function gridListener() {
 
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: any) => {
-      event.stopPropagation();
-      if (ships.shipsCounter === 0 || event.target.classList.contains('safeZone')) return;
+      if (
+        ships.shipsCounter === 0 ||
+        event.target.classList.contains('safeZone') ||
+        event.target?.classList[0] === 'my-grid'
+      )
+        return;
+
       const elem = event.target?.classList[0];
 
       if (activeSector === '') activeSector = elem;

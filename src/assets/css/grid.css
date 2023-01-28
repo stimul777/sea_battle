@@ -108,6 +108,17 @@
 }
 
 
+.frozenGrid {
+  position: absolute;
+  display: none;
+  background-color: rgba(235, 13, 13, 0.473);
+  z-index: 999;
+  border: 1px solid rgba(235, 13, 13, 0.473);
+  border-radius: 6px;
+
+}
+
+
 
 /* animation */
 .square-fire-animation {

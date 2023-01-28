@@ -24,6 +24,10 @@ class Sound {
   setSound(value: tSound) {
     if (!this.isSound) return;
 
+    this.hit.pause();
+    this.miss.pause();
+    this.shot.pause();
+
     switch (value) {
       case 'hit':
         return this.hit.play();
