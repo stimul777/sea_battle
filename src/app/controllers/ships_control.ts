@@ -21,24 +21,28 @@ class Ships {
       battleship: {
         quantity: 1,
         installed: false,
+        inProgress: [],
         injuriesCoordinates: [],
         coordinates: [],
       },
       cruisers: {
         quantity: 2,
         installed: false,
+        inProgress: [],
         injuriesCoordinates: [],
         coordinates: [],
       },
       destroyers: {
         quantity: 3,
         installed: false,
+        inProgress: [],
         injuriesCoordinates: [],
         coordinates: [],
       },
       boats: {
         quantity: 4,
         installed: false,
+        inProgress: [],
         injuriesCoordinates: [],
         coordinates: [],
       },
@@ -61,52 +65,67 @@ class Ships {
     };
 
     //это, конечно же, боль...
+    //! OnRepacking не актуален, корабли должны добавляться в собственный массив сразу же.
     switch (true) {
       //* Battleship
       case this.shipsCounter > 16:
-        this.shipsRang.battleship.coordinates.push(sector);
+        this.shipsRang.battleship.inProgress.push(sector);
         break;
       case this.shipsCounter === 16:
         startGame();
-        this.shipsRang.battleship.coordinates.push(sector);
-        this.shipsRang.battleship.coordinates = onRepacking(this.shipsRang.battleship.coordinates, 0);
+        this.shipsRang.battleship.inProgress.push(sector);
+        this.shipsRang.battleship.coordinates.push(this.shipsRang.battleship.inProgress);
+        this.shipsRang.battleship.inProgress = [];
+        // this.shipsRang.battleship.coordinates = onRepacking(this.shipsRang.battleship.coordinates, 0);
         return setCounter(this.shipsRang.battleship);
       //* Cruisers
       case this.shipsCounter === 15:
       case this.shipsCounter === 14:
       case this.shipsCounter === 12:
       case this.shipsCounter === 11:
-        this.shipsRang.cruisers.coordinates.push(sector);
+        this.shipsRang.cruisers.inProgress.push(sector);
         break;
       case this.shipsCounter === 13:
-        this.shipsRang.cruisers.coordinates.push(sector);
-        return setCounter(this.shipsRang.cruisers);
       case this.shipsCounter === 10:
-        this.shipsRang.cruisers.coordinates.push(sector);
-        this.shipsRang.cruisers.coordinates = onRepacking(this.shipsRang.cruisers.coordinates, 3);
+        this.shipsRang.cruisers.inProgress.push(sector);
+        this.shipsRang.cruisers.coordinates.push(this.shipsRang.cruisers.inProgress);
+        this.shipsRang.cruisers.inProgress = [];
+        // console.log(' this.shipsRang.cruisers.coordinates', this.shipsRang.cruisers.coordinates);
         return setCounter(this.shipsRang.cruisers);
+      // this.shipsRang.cruisers.coordinates.push(sector);
+      // this.shipsRang.cruisers.coordinates = onRepacking(this.shipsRang.cruisers.coordinates, 3);
+      // return setCounter(this.shipsRang.cruisers);
       //* Destroyers
       case this.shipsCounter === 10:
       case this.shipsCounter === 9:
       case this.shipsCounter === 7:
       case this.shipsCounter === 5:
-        this.shipsRang.destroyers.coordinates.push(sector);
+        this.shipsRang.destroyers.inProgress.push(sector);
         break;
-      case this.shipsCounter === 8 || this.shipsCounter === 6:
-        this.shipsRang.destroyers.coordinates.push(sector);
+      case this.shipsCounter === 8 || this.shipsCounter === 6 || this.shipsCounter === 4:
+        this.shipsRang.destroyers.inProgress.push(sector);
+        this.shipsRang.destroyers.coordinates.push(this.shipsRang.destroyers.inProgress);
+        this.shipsRang.destroyers.inProgress = [];
+        // this.shipsRang.destroyers.coordinates.push(sector);
         return setCounter(this.shipsRang.destroyers);
-      case this.shipsCounter === 4:
-        this.shipsRang.destroyers.coordinates.push(sector);
-        this.shipsRang.destroyers.coordinates = onRepacking(this.shipsRang.destroyers.coordinates, 2);
-        return setCounter(this.shipsRang.destroyers);
+      // case this.shipsCounter === 4:
+      //   // this.shipsRang.destroyers.coordinates.push(sector);
+      //   this.shipsRang.destroyers.inProgress.push(sector);
+      //   this.shipsRang.destroyers.coordinates.push(this.shipsRang.destroyers.inProgress);
+      //   this.shipsRang.destroyers.inProgress = [];
+      //   // this.shipsRang.destroyers.coordinates = onRepacking(this.shipsRang.destroyers.coordinates, 2);
+      //   return setCounter(this.shipsRang.destroyers);
       //* Boats
-      case this.shipsCounter < 4 && this.shipsCounter > 0:
-        this.shipsRang.boats.coordinates.push(sector);
+      case this.shipsCounter < 4 && this.shipsCounter >= 0:
+        // this.shipsRang.boats.coordinates.push(sector);
+        this.shipsRang.boats.inProgress.push(sector);
+        this.shipsRang.boats.coordinates.push(this.shipsRang.boats.inProgress);
+        this.shipsRang.boats.inProgress = [];
         return setCounter(this.shipsRang.boats);
-      case this.shipsCounter === 0:
-        this.shipsRang.boats.coordinates.push(sector);
-        this.shipsRang.boats.coordinates = onRepacking(this.shipsRang.boats.coordinates, 1);
-        return setCounter(this.shipsRang.boats);
+      // case this.shipsCounter === 0:
+      //   this.shipsRang.boats.coordinates.push(sector);
+      //   // this.shipsRang.boats.coordinates = onRepacking(this.shipsRang.boats.coordinates, 1);
+      //   // return setCounter(this.shipsRang.boats);
     }
   }
 

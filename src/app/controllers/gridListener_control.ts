@@ -1,11 +1,14 @@
 import { TShip, TDirectionShip } from '@/types/ships';
 import { sound } from '@/app/controllers/sound_control';
 import { onValidations } from '@/app/view/grid/validationOfShips_view';
-// import { getDeadZone } from '@/app/view/grid/deadZone_view';
+import { getDeadZone } from '@/app/view/grid/deadZone_view';
 import { ships } from '@/app/controllers/ships_control';
 import { colorGenerator } from '@/helpers/colorGenerator';
 
-//Слушатель событий с сетки
+//*
+//* Слушатель сетки.
+//* Валидация, удаление, добавление, мертвая зона кораблей
+//*
 export function gridListener() {
   const $myGrid = document.querySelector('.my-grid');
   // const $myGridSectors = $myGrid?.childNodes;
@@ -16,6 +19,7 @@ export function gridListener() {
 
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: any) => {
+      //!если начать ставить диаганально - ставятся.
       if (
         ships.shipsCounter === 0 ||
         event.target.classList.contains('safeZone') ||
@@ -54,23 +58,24 @@ export function gridListener() {
         return;
       } else {
         event.target.classList.add('active');
-        const isShipInstalled: TShip | undefined = ships.setShips(elem);
+        const isShipInstalled: TShip | undefined = ships.setShips(elem); //установлен ли корабль?
 
+        //корабль установлен
         if (isShipInstalled) {
           let colorShip = colorGenerator();
           isShipInstalled.coordinates
             .flatMap((f) => f)
             .forEach((sector: string) => {
-              const elem = document.querySelector('.' + sector) as HTMLElement;
-              elem.classList.add('ship-is-installed');
-              elem.style.backgroundColor = colorShip;
+              const setElem = document.querySelector('.' + sector) as HTMLElement;
+              setElem.classList.add('ship-is-installed');
+              setElem.style.backgroundColor = colorShip;
             });
 
-          // getDeadZone(
-          //   isShipInstalled.coordinates.flatMap((f) => f),
-          //   activeSector,
-          //   directionShip,
-          // );
+          getDeadZone(
+            isShipInstalled?.coordinates.find((ships) => ships.find((sector) => sector === elem)),
+            activeSector,
+            directionShip,
+          );
 
           activeSector = directionShip = ''; //удалить активный сектор;
         }

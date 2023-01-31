@@ -8,8 +8,9 @@ export type TShips = {
 export type TShip = {
   quantity: number;
   installed: boolean;
+  inProgress: string[];
   injuriesCoordinates: string[];
-  coordinates: string[];
+  coordinates: string[][];
 };
 
 export type tShot = {

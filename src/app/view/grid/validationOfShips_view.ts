@@ -12,17 +12,17 @@ export function onValidations(sector: string, selectedMainSector: string, direct
   const $sector = document.querySelector('.' + sector);
   const elem = $sector?.classList[0];
 
-  const getNearElement = (element: any, type: string) => {
-    if (type === 'previous') {
-      return element?.previousSibling;
-    }
-    if (type === 'next') {
-      return element?.nextSibling;
-    }
-  };
+  let previousElem = $sector?.previousSibling as HTMLElement; //активный предыдущий элемент
+  let nextElem = $sector?.nextSibling as HTMLElement; //активный следующий элемент
 
-  let previousElem = getNearElement($sector, 'previous'); //активен ли предыдущий соседний элемент
-  let nextElem = getNearElement($sector, 'next'); //активен ли следующий соседний элемент
+  // const getNearElement = (element: any, type: string) => {
+  //   if (type === 'previous') {
+  //     return element?.previousSibling;
+  //   }
+  //   if (type === 'next') {
+  //     return element?.nextSibling;
+  //   }
+  // };
 
   const sectors = {
     mainSector: {
