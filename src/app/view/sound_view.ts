@@ -1,4 +1,4 @@
-import { sound } from '@/app/controllers/sound_control';
+import { sound } from '@/app/models/sound';
 
 //*
 //* Виджет аудио плеера

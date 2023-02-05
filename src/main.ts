@@ -6,6 +6,6 @@ onPier();
 import { onViewPlayer } from '@/app/view/sound_view';
 onViewPlayer();
 import '@/app/view/grid/grid_view';
-import '@/app/controllers/gridListener_control';
+import '@/app/controllers/listener';
 import { soundListener } from '@/app/view/sound_view';
 soundListener();

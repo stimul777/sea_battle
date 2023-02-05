@@ -2,8 +2,7 @@
 import { onPier } from '@/app/view/pier/pier_view';
 import { getMyShot, getEnemyShot, startGame } from '@/app/view/grid/events_view';
 import { toast } from '@/app/view/toast_view';
-// controllers
-import { player } from '@/app/controllers/player_control';
+import { player } from '@/app/models/player';
 
 import { TShips, TShip, tShot, tConditionOfShip } from '@/types/ships';
 import { onConsole } from '@/helpers/console';

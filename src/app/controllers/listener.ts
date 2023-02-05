@@ -1,8 +1,8 @@
 import { TShip, TDirectionShip } from '@/types/ships';
-import { sound } from '@/app/controllers/sound_control';
+import { sound } from '@/app/models/sound';
 import { onValidations } from '@/app/view/grid/validationOfShips_view';
 import { getDeadZone } from '@/app/view/grid/deadZone_view';
-import { ships } from '@/app/controllers/ships_control';
+import { ships } from '@/app/models/ships';
 import { colorGenerator } from '@/helpers/colorGenerator';
 
 //*

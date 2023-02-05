@@ -1,4 +1,4 @@
-import { sound } from '@/app/controllers/sound_control';
+import { sound } from '@/app/models/sound';
 import { onReadyBtn } from '@/app/view/readyBtn_view';
 import { setFrozenSwitch } from '@/app/view/grid/frozenGrid';
 

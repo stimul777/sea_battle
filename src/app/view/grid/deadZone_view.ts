@@ -7,87 +7,129 @@ import { onValidations } from '@/app/view/grid/validationOfShips_view';
 export function getDeadZone(coordinates: any, activeSector: string, directionShip: string) {
   console.log('dead zone', coordinates, activeSector, directionShip);
 
+  //! БРАТЬ ИЗ МОДЕЛИ. МОДЕЛЬ СЕТКИ.
+  const letters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+
   let deadZoneCoordinates: any = {
     plus: [],
     minus: [],
   };
 
+  //?
+  //?соседи горизонталь
+  //?формирование объекта с клетками от корабля в большую и меньшую сторону(горизонт)
+  //?......++++....
+  //?......****....
+  //?......++++....
   coordinates.sort().forEach((sector: any) => {
     let newSectorPlus = null;
     let newSectorMinus = null;
+    let isSingleShip = coordinates.length === 1;
 
-    if (directionShip === 'horizontal') {
-      let sectorNumber = sector.substring(2, 1); //letter;
-      let sectorLetter = sector.substring(0, 1); //number
+    if (directionShip === 'horizontal' || isSingleShip) {
+      let sectorNumber = sector.substring(1); //number
+      let sectorLetter = sector.substring(0, 1); //letter
 
       newSectorPlus = sectorLetter + (Number(sectorNumber) + 1);
       newSectorMinus = sectorLetter + (Number(sectorNumber) - 1);
     }
 
-    const $newSectorPlus = document.querySelector('.' + newSectorPlus);
-    const $newSectorMinus = document.querySelector('.' + newSectorMinus);
+    const $newSectorPlus = document?.querySelector('.' + newSectorPlus);
+    const $newSectorMinus = document?.querySelector('.' + newSectorMinus);
 
-    deadZoneCoordinates.plus.push(newSectorPlus);
-    deadZoneCoordinates.minus.push(newSectorMinus);
+    //число с плюсом уходит в несуществующую клетку
+    if (Number(newSectorPlus?.substring(1)) <= letters.length && !isSingleShip) {
+      deadZoneCoordinates.plus.push(newSectorPlus);
+      onValidations(newSectorPlus, activeSector, directionShip) ? null : $newSectorPlus?.classList.add('safeZone');
+    }
 
-    onValidations(newSectorPlus, activeSector, directionShip) ? null : $newSectorPlus?.classList.add('safeZone');
-    onValidations(newSectorMinus, activeSector, directionShip) ? null : $newSectorMinus?.classList.add('safeZone');
+    //число с минусом уходит в несуществующую клетку
+    if (Number(newSectorMinus?.substring(1)) != 0 && !isSingleShip) {
+      deadZoneCoordinates.minus.push(newSectorMinus);
+      onValidations(newSectorMinus, activeSector, directionShip) ? null : $newSectorMinus?.classList.add('safeZone');
+    }
+
+    //!Диаганально не валидируется, нужно сделать валидатор onValidations на одиночный корабль
+    if (isSingleShip) {
+      $newSectorMinus?.classList.add('safeZone');
+      $newSectorPlus?.classList.add('safeZone');
+    }
   });
+
+  console.log('deadZoneCoordinates', deadZoneCoordinates);
 
   //?
   //?соседи диагональ
+  //?
+
+  //Plus+ (down!)
   //?......++++...
   //?......****....
   //?.....++++++
+  //!РАБОТАЕТ
+  if (deadZoneCoordinates.plus.length > 0) {
+    const lastPlus = deadZoneCoordinates.plus[coordinates.length - 1];
+    const firstPlus = deadZoneCoordinates.plus[0];
 
-  //Plus+
-  const lastPlus = deadZoneCoordinates.plus[coordinates.length - 1];
-  const firstPlus = deadZoneCoordinates.plus[0];
-  console.log('lastPlus', lastPlus);
-  console.log('firstPlus', firstPlus);
+    const $newLastPlus = document.querySelector('.' + lastPlus); // последний элемент мертвой зоны низ
+    const $newFirstPlus = document.querySelector('.' + firstPlus); //первый элемент мертвой зоны низ
 
-  const $newLastPlus = document.querySelector('.' + lastPlus);
-  const $newFirstPlus = document.querySelector('.' + firstPlus);
+    const $dSectorPlusNext = $newLastPlus?.nextSibling as HTMLElement;
+    const $dSectorPlusPrevious = $newFirstPlus?.previousSibling as HTMLElement;
 
-  const $dSectorPlusNext = $newLastPlus?.nextSibling as HTMLElement;
-  const $dSectorPlusPrevious = $newFirstPlus?.previousSibling as HTMLElement;
+    if ($dSectorPlusNext.classList[0].substring(0, 1) != letters[0].substring(0, 1)) {
+      $dSectorPlusNext?.classList.add('safeZone');
+    }
 
-  $dSectorPlusPrevious.classList.add('safeZone');
-  $dSectorPlusNext.classList.add('safeZone');
-
-  // Minus+
-  const lastMinus = deadZoneCoordinates.minus[coordinates.length - 1];
-  const firstMinus = deadZoneCoordinates.minus[0];
-
-  console.log('lastMinus', lastMinus);
-  console.log('firstMinus', firstMinus);
-
-  const $newLastMinus = document.querySelector('.' + lastMinus);
-  const $newFirstMinus = document.querySelector('.' + firstMinus);
-
-  const $sectorMinusNext = $newLastMinus?.nextSibling as HTMLElement;
-  const $sectorMinusPrevious = $newFirstMinus?.previousSibling as HTMLElement;
-
-  if ($sectorMinusNext) {
-    $sectorMinusNext.classList.add('safeZone');
+    if ($dSectorPlusPrevious.classList[0].substring(0, 1) != letters[letters.length - 1].substring(0, 1)) {
+      $dSectorPlusPrevious?.classList.add('safeZone');
+    }
   }
 
-  if ($sectorMinusPrevious) {
-    $sectorMinusPrevious.classList.add('safeZone');
+  //Minus- (up!)
+  // //?.....++++++..
+  // //?......****....
+  // //?......++++
+  //!РАБОТАЕТ
+  if (deadZoneCoordinates.minus.length > 0) {
+    const lastMinus = deadZoneCoordinates.minus[coordinates.length - 1];
+    const firstMinus = deadZoneCoordinates.minus[0];
+
+    const $newLastMinus = document.querySelector('.' + lastMinus);
+    const $newFirstMinus = document.querySelector('.' + firstMinus);
+
+    const $sectorMinusNext = $newLastMinus?.nextSibling as HTMLElement; //последний диагональ
+    const $sectorMinusPrevious = $newFirstMinus?.previousSibling as HTMLElement; //первый диагональ
+
+    if ($newLastMinus?.classList[0].substring(0, 1) != letters[letters.length - 1].substring(0, 1)) {
+      $sectorMinusNext.classList.add('safeZone');
+    }
+
+    if ($sectorMinusPrevious?.classList[0].substring(0, 1) !== letters[letters.length - 1].substring(0, 1)) {
+      $sectorMinusPrevious.classList.add('safeZone');
+    }
   }
 
   //?
   //?соседи по бокам
   //?.....+****+..
+  //! РАБОТАЕТ
   let last = coordinates[coordinates.length - 1];
   let first = coordinates[0];
 
-  const $newSectorPrevious = document.querySelector('.' + first) as HTMLElement;
-  const $newSectorNext = document.querySelector('.' + last) as HTMLElement;
+  const $newSectorPrevious = document.querySelector('.' + first) as HTMLElement; //первая секция корабля
+  const $newSectorNext = document.querySelector('.' + last) as HTMLElement; //последняя секция корабля
 
   let $previousElem = $newSectorPrevious?.previousSibling as HTMLElement; //предыдущий соседний элемент
   let $nextElem = $newSectorNext?.nextSibling as HTMLElement; // следующий соседний элемент
 
-  if ($nextElem) $nextElem?.classList.add('safeZone');
-  if ($previousElem) $previousElem.classList.add('safeZone');
+  //перед
+  if ($previousElem?.classList[0].substring(0, 1) != letters[letters.length - 1].substring(0, 1)) {
+    $previousElem?.classList.add('safeZone');
+  }
+
+  //после
+  if ($nextElem?.classList[0].substring(0, 1) != letters[0].substring(0, 1)) {
+    $nextElem?.classList.add('safeZone');
+  }
 }

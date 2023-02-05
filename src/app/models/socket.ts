@@ -1,8 +1,8 @@
 // API
 import { io } from 'socket.io-client';
 const socket = io();
-import { ships } from '@/app/controllers/ships_control';
-import { player } from '@/app/controllers/player_control';
+import { ships } from '@/app/models/ships';
+import { player } from '@/app/models/player';
 import { tShot } from '@/types/ships';
 import { TStatus } from '@/types/player';
 

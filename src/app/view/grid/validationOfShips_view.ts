@@ -15,15 +15,6 @@ export function onValidations(sector: string, selectedMainSector: string, direct
   let previousElem = $sector?.previousSibling as HTMLElement; //активный предыдущий элемент
   let nextElem = $sector?.nextSibling as HTMLElement; //активный следующий элемент
 
-  // const getNearElement = (element: any, type: string) => {
-  //   if (type === 'previous') {
-  //     return element?.previousSibling;
-  //   }
-  //   if (type === 'next') {
-  //     return element?.nextSibling;
-  //   }
-  // };
-
   const sectors = {
     mainSector: {
       letter: selectedMainSector.substring(0, 1),

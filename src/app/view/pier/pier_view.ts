@@ -1,4 +1,4 @@
-import { ships } from '@/app/controllers/ships_control';
+import { ships } from '@/app/models/ships';
 
 //*
 //* Информация о количестве кораблей
