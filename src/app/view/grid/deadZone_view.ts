@@ -1,8 +1,8 @@
-import { onValidations } from '@/app/view/grid/validationOfShips_view';
+import { onValidations } from '@/app/view/grid/validation';
+import { TDirectionShip } from '@/types/ships';
 
 //*
 //* "Мертвая" неактивная зона вокруг корабля
-//* coordinates - координаты установленного корабля
 //*
 export function getDeadZone(coordinates: any, activeSector: string, directionShip: string) {
   console.log('dead zone', coordinates, activeSector, directionShip);
@@ -14,15 +14,16 @@ export function getDeadZone(coordinates: any, activeSector: string, directionShi
     case 'vertical':
       setOnVerticalDirection(coordinates, activeSector, directionShip);
       break;
+
+    case 'single':
+      setOnHorizontalDirection(coordinates, activeSector, directionShip);
+      setOnVerticalDirection(coordinates, activeSector, directionShip);
+      break;
   }
 }
 
-//*
-//* "Мертвая" неактивная зона вокруг корабля
-//* coordinates - координаты установленного корабля
-//*
-
-const setOnVerticalDirection = (coordinates: any, activeSector: string, directionShip: string) => {
+// УСТАНОВКА МЕРТВОЙ ЗОНЫ ПО ВЕРТИКАЛИ
+const setOnVerticalDirection = (coordinates: any, activeSector: string, directionShip: TDirectionShip) => {
   //! БРАТЬ ИЗ МОДЕЛИ. МОДЕЛЬ СЕТКИ.
   const letters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
@@ -31,12 +32,10 @@ const setOnVerticalDirection = (coordinates: any, activeSector: string, directio
     left: [],
   };
 
-  //?
-  //?соседи вертикаль
+  //?соседи вертикаль: справа и слева
   //?..*+*..
   //?..*+*..
   //?..*+*..
-  //?
   coordinates.sort().forEach((sector: any) => {
     let $newSectorPrevious = document?.querySelector('.' + sector)?.previousSibling as HTMLElement; //предыдущий соседний элемент
     let $newSectorNext = document?.querySelector('.' + sector)?.nextSibling as HTMLElement; // следующий соседний элемент
@@ -56,14 +55,12 @@ const setOnVerticalDirection = (coordinates: any, activeSector: string, directio
     }
   });
 
-  //?
-  //?соседи вертикаль
-  //?Plus+ and Minus- (left)
+  //?соседи вертикаль: диагональ
+  //?Plus+ and Minus-
   //?....+.+.
   //?.....*..
   //?.....*..
   //?....+*+.\
-
   const setPointDiagonal = (points: string[]) => {
     const pointTop: string = points[0];
     const pointBottom: string = points[points.length - 1];
@@ -74,7 +71,12 @@ const setOnVerticalDirection = (coordinates: any, activeSector: string, directio
     const $topMinus = document?.querySelector('.' + pointTopMinus) as HTMLElement; // последний элемент мертвой зоны верх
     const $bottomPlus = document.querySelector('.' + pointBottomPlus) as HTMLElement; //первый элемент мертвой зоны низ
 
+    console.log('$topMinus.classList[0].substring(1, 0)', $topMinus);
+
+    // if ($topMinus.classList[0].substring(1, 0) !== letters[letters.length - 1]) {
     $topMinus?.classList.add('safeZone');
+    // }
+
     $bottomPlus?.classList.add('safeZone');
   };
 
@@ -85,7 +87,8 @@ const setOnVerticalDirection = (coordinates: any, activeSector: string, directio
   setPointDiagonal(coordinates);
 };
 
-const setOnHorizontalDirection = (coordinates: any, activeSector: string, directionShip: string) => {
+///УСТАНОВКА МЕРТВОЙ ЗОНЫ ПО ГОРИЗОНТАЛИ
+const setOnHorizontalDirection = (coordinates: any, activeSector: string, directionShip: TDirectionShip) => {
   //! БРАТЬ ИЗ МОДЕЛИ. МОДЕЛЬ СЕТКИ.
   const letters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
@@ -103,9 +106,7 @@ const setOnHorizontalDirection = (coordinates: any, activeSector: string, direct
   coordinates.sort().forEach((sector: any) => {
     let newSectorPlus = null;
     let newSectorMinus = null;
-    let isSingleShip = coordinates.length === 1;
 
-    // if (directionShip === 'horizontal' || isSingleShip) {
     let sectorNumber = sector.substring(1); //number
     let sectorLetter = sector.substring(0, 1); //letter
 
@@ -117,25 +118,17 @@ const setOnHorizontalDirection = (coordinates: any, activeSector: string, direct
     const $newSectorMinus = document?.querySelector('.' + newSectorMinus);
 
     //число с плюсом уходит в несуществующую клетку
-    if (Number(newSectorPlus?.substring(1)) <= letters.length && !isSingleShip) {
+    if (Number(newSectorPlus?.substring(1)) <= letters.length) {
       deadZoneCoordinates.plus.push(newSectorPlus);
       onValidations(newSectorPlus, activeSector, directionShip) ? null : $newSectorPlus?.classList.add('safeZone');
     }
 
     //число с минусом уходит в несуществующую клетку
-    if (Number(newSectorMinus?.substring(1)) != 0 && !isSingleShip) {
+    if (Number(newSectorMinus?.substring(1)) != 0) {
       deadZoneCoordinates.minus.push(newSectorMinus);
       onValidations(newSectorMinus, activeSector, directionShip) ? null : $newSectorMinus?.classList.add('safeZone');
     }
-
-    //!Диаганально не валидируется, нужно сделать валидатор onValidations на одиночный корабль
-    if (isSingleShip) {
-      $newSectorMinus?.classList.add('safeZone');
-      $newSectorPlus?.classList.add('safeZone');
-    }
   });
-
-  console.log('deadZoneCoordinates', deadZoneCoordinates);
 
   //?
   //?соседи диагональ

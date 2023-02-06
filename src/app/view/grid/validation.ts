@@ -1,3 +1,5 @@
+import { TDirectionShip } from '@/types/ships';
+
 //*
 //* Валидация кораблей на сетке
 //* sector - выбранный сектор
@@ -6,7 +8,7 @@
 //* true - валидация успешно прошла
 //* false - ошибка
 //*
-export function onValidations(sector: string, selectedMainSector: string, directionShip: string): boolean {
+export function onValidations(sector: string, selectedMainSector: string, directionShip: TDirectionShip): boolean {
   if (directionShip === '') return true;
 
   const $sector = document.querySelector('.' + sector);
@@ -54,6 +56,10 @@ export function onValidations(sector: string, selectedMainSector: string, direct
       ) {
         result = true;
       }
+      break;
+
+    case 'single':
+      result = true;
       break;
   }
 

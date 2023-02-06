@@ -1,6 +1,6 @@
 import { TShip, TDirectionShip } from '@/types/ships';
 import { sound } from '@/app/models/sound';
-import { onValidations } from '@/app/view/grid/validationOfShips_view';
+import { onValidations } from '@/app/view/grid/validation';
 import { getDeadZone } from '@/app/view/grid/deadZone_view';
 import { ships } from '@/app/models/ships';
 import { colorGenerator } from '@/helpers/colorGenerator';
@@ -30,6 +30,10 @@ export function gridListener() {
       const elem = event.target?.classList[0];
 
       if (activeSector === '') activeSector = elem;
+
+      if (ships.shipsCounter <= 4) {
+        directionShip = 'single';
+      }
 
       if (activeSector !== elem) {
         //определение направления корабля по букве (ВЕРТИКАЛЬ)

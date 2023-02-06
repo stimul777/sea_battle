@@ -29,4 +29,4 @@ export type tConditionOfShip = {
   sunkenShip: string[];
 };
 
-export type TDirectionShip = 'vertical' | 'horizontal' | '';
+export type TDirectionShip = 'vertical' | 'horizontal' | 'single' | '';
