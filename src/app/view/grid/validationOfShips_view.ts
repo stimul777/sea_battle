@@ -17,12 +17,12 @@ export function onValidations(sector: string, selectedMainSector: string, direct
 
   const sectors = {
     mainSector: {
-      letter: selectedMainSector.substring(0, 1),
-      number: selectedMainSector.substring(2, 1),
+      letter: selectedMainSector.substring(1, 0),
+      number: selectedMainSector.substring(1),
     },
     activeSector: {
-      letter: elem?.substring(0, 1),
-      number: elem?.substring(2, 1),
+      letter: elem?.substring(1, 0),
+      number: elem?.substring(1),
     },
   };
 

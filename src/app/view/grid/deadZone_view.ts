@@ -7,6 +7,85 @@ import { onValidations } from '@/app/view/grid/validationOfShips_view';
 export function getDeadZone(coordinates: any, activeSector: string, directionShip: string) {
   console.log('dead zone', coordinates, activeSector, directionShip);
 
+  switch (directionShip) {
+    case 'horizontal':
+      setOnHorizontalDirection(coordinates, activeSector, directionShip);
+      break;
+    case 'vertical':
+      setOnVerticalDirection(coordinates, activeSector, directionShip);
+      break;
+  }
+}
+
+//*
+//* "Мертвая" неактивная зона вокруг корабля
+//* coordinates - координаты установленного корабля
+//*
+
+const setOnVerticalDirection = (coordinates: any, activeSector: string, directionShip: string) => {
+  //! БРАТЬ ИЗ МОДЕЛИ. МОДЕЛЬ СЕТКИ.
+  const letters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+
+  let deadZoneVertical: any = {
+    right: [],
+    left: [],
+  };
+
+  //?
+  //?соседи вертикаль
+  //?..*+*..
+  //?..*+*..
+  //?..*+*..
+  //?
+  coordinates.sort().forEach((sector: any) => {
+    let $newSectorPrevious = document?.querySelector('.' + sector)?.previousSibling as HTMLElement; //предыдущий соседний элемент
+    let $newSectorNext = document?.querySelector('.' + sector)?.nextSibling as HTMLElement; // следующий соседний элемент
+
+    if ($newSectorPrevious && $newSectorPrevious.classList[0].substring(0, 1) !== letters[letters.length - 1]) {
+      onValidations($newSectorPrevious.classList[0], activeSector, directionShip)
+        ? null
+        : $newSectorPrevious?.classList.add('safeZone'),
+        deadZoneVertical.left.push($newSectorPrevious.classList[0]);
+    }
+
+    if ($newSectorNext && $newSectorNext.classList[0].substring(0, 1) !== letters[0]) {
+      onValidations($newSectorNext.classList[0], activeSector, directionShip)
+        ? null
+        : $newSectorNext?.classList.add('safeZone'),
+        deadZoneVertical.right.push($newSectorNext.classList[0]);
+    }
+  });
+
+  //?
+  //?соседи вертикаль
+  //?Plus+ and Minus- (left)
+  //?....+.+.
+  //?.....*..
+  //?.....*..
+  //?....+*+.\
+
+  const setPointDiagonal = (points: string[]) => {
+    const pointTop: string = points[0];
+    const pointBottom: string = points[points.length - 1];
+
+    const pointTopMinus: string = pointTop.substring(1, 0) + (Number(pointTop.substring(1)) - 1); //крайняя точка - 1
+    const pointBottomPlus: string = pointBottom.substring(1, 0) + (Number(pointBottom.substring(1)) + 1); //крайняя точка +1
+
+    const $topMinus = document?.querySelector('.' + pointTopMinus) as HTMLElement; // последний элемент мертвой зоны верх
+    const $bottomPlus = document.querySelector('.' + pointBottomPlus) as HTMLElement; //первый элемент мертвой зоны низ
+
+    $topMinus?.classList.add('safeZone');
+    $bottomPlus?.classList.add('safeZone');
+  };
+
+  if (deadZoneVertical.left.length > 0) setPointDiagonal(deadZoneVertical.left);
+
+  if (deadZoneVertical.right.length > 0) setPointDiagonal(deadZoneVertical.right);
+
+  setPointDiagonal(coordinates);
+};
+
+const setOnHorizontalDirection = (coordinates: any, activeSector: string, directionShip: string) => {
   //! БРАТЬ ИЗ МОДЕЛИ. МОДЕЛЬ СЕТКИ.
   const letters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
@@ -26,13 +105,13 @@ export function getDeadZone(coordinates: any, activeSector: string, directionShi
     let newSectorMinus = null;
     let isSingleShip = coordinates.length === 1;
 
-    if (directionShip === 'horizontal' || isSingleShip) {
-      let sectorNumber = sector.substring(1); //number
-      let sectorLetter = sector.substring(0, 1); //letter
+    // if (directionShip === 'horizontal' || isSingleShip) {
+    let sectorNumber = sector.substring(1); //number
+    let sectorLetter = sector.substring(0, 1); //letter
 
-      newSectorPlus = sectorLetter + (Number(sectorNumber) + 1);
-      newSectorMinus = sectorLetter + (Number(sectorNumber) - 1);
-    }
+    newSectorPlus = sectorLetter + (Number(sectorNumber) + 1);
+    newSectorMinus = sectorLetter + (Number(sectorNumber) - 1);
+    // }
 
     const $newSectorPlus = document?.querySelector('.' + newSectorPlus);
     const $newSectorMinus = document?.querySelector('.' + newSectorMinus);
@@ -132,4 +211,4 @@ export function getDeadZone(coordinates: any, activeSector: string, directionShi
   if ($nextElem?.classList[0].substring(0, 1) != letters[0].substring(0, 1)) {
     $nextElem?.classList.add('safeZone');
   }
-}
+};
