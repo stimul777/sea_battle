@@ -1,7 +1,7 @@
 import { TShip, TDirectionShip } from '@/types/ships';
 import { sound } from '@/app/models/sound';
-import { onValidations } from '@/app/view/grid/validation';
-import { getDeadZone } from '@/app/view/grid/deadZone_view';
+import { onValidations } from '@/app/controllers/validation';
+import { setDeadZone } from '@/app/controllers/deadZone/deadZone';
 import { ships } from '@/app/models/ships';
 import { colorGenerator } from '@/helpers/colorGenerator';
 
@@ -76,7 +76,7 @@ export function gridListener() {
               setElem.style.backgroundColor = colorShip;
             });
 
-          getDeadZone(
+          setDeadZone(
             isShipInstalled?.coordinates.find((ships) => ships.find((sector) => sector === elem)),
             activeSector,
             directionShip,

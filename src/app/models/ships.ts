@@ -1,13 +1,11 @@
-// view
-import { onPier } from '@/app/view/pier/pier_view';
-import { getMyShot, getEnemyShot, startGame } from '@/app/view/grid/events_view';
-import { toast } from '@/app/view/toast_view';
+import { startGame } from '@/app/controllers/events';
 import { player } from '@/app/models/player';
 
 import { TShips, TShip, tShot, tConditionOfShip } from '@/types/ships';
 import { onConsole } from '@/helpers/console';
 import { setShot, msgShot } from '@/app/models/socket';
-import { onRepacking } from '@/helpers/repacking';
+
+import { handlerToToast, handlerToPier, handlerToShots } from '@/app/controllers/state';
 
 class Ships {
   shipsCounter: number;
@@ -59,12 +57,11 @@ class Ships {
     const setCounter = (ship: TShip) => {
       ship.quantity -= 1;
       ship.installed = true;
-      onPier(); //ререндер
+      handlerToPier(this.shipsRang);
       return ship;
     };
 
     //это, конечно же, боль...
-    //! OnRepacking не актуален, корабли должны добавляться в собственный массив сразу же.
     switch (true) {
       //* Battleship
       case this.shipsCounter > 16:
@@ -75,7 +72,7 @@ class Ships {
         this.shipsRang.battleship.inProgress.push(sector);
         this.shipsRang.battleship.coordinates.push(this.shipsRang.battleship.inProgress);
         this.shipsRang.battleship.inProgress = [];
-        // this.shipsRang.battleship.coordinates = onRepacking(this.shipsRang.battleship.coordinates, 0);
+        handlerToToast('red', 'Battleship готов к бою!', true);
         return setCounter(this.shipsRang.battleship);
       //* Cruisers
       case this.shipsCounter === 15:
@@ -89,11 +86,8 @@ class Ships {
         this.shipsRang.cruisers.inProgress.push(sector);
         this.shipsRang.cruisers.coordinates.push(this.shipsRang.cruisers.inProgress);
         this.shipsRang.cruisers.inProgress = [];
-        // console.log(' this.shipsRang.cruisers.coordinates', this.shipsRang.cruisers.coordinates);
+        handlerToToast('red', 'Cruisers готов к бою!', true);
         return setCounter(this.shipsRang.cruisers);
-      // this.shipsRang.cruisers.coordinates.push(sector);
-      // this.shipsRang.cruisers.coordinates = onRepacking(this.shipsRang.cruisers.coordinates, 3);
-      // return setCounter(this.shipsRang.cruisers);
       //* Destroyers
       case this.shipsCounter === 10:
       case this.shipsCounter === 9:
@@ -105,26 +99,15 @@ class Ships {
         this.shipsRang.destroyers.inProgress.push(sector);
         this.shipsRang.destroyers.coordinates.push(this.shipsRang.destroyers.inProgress);
         this.shipsRang.destroyers.inProgress = [];
-        // this.shipsRang.destroyers.coordinates.push(sector);
+        handlerToToast('red', 'Destroyer готов к бою!', true);
         return setCounter(this.shipsRang.destroyers);
-      // case this.shipsCounter === 4:
-      //   // this.shipsRang.destroyers.coordinates.push(sector);
-      //   this.shipsRang.destroyers.inProgress.push(sector);
-      //   this.shipsRang.destroyers.coordinates.push(this.shipsRang.destroyers.inProgress);
-      //   this.shipsRang.destroyers.inProgress = [];
-      //   // this.shipsRang.destroyers.coordinates = onRepacking(this.shipsRang.destroyers.coordinates, 2);
-      //   return setCounter(this.shipsRang.destroyers);
       //* Boats
       case this.shipsCounter < 4 && this.shipsCounter >= 0:
-        // this.shipsRang.boats.coordinates.push(sector);
         this.shipsRang.boats.inProgress.push(sector);
         this.shipsRang.boats.coordinates.push(this.shipsRang.boats.inProgress);
         this.shipsRang.boats.inProgress = [];
+        handlerToToast('red', 'Boat готов к бою!', true);
         return setCounter(this.shipsRang.boats);
-      // case this.shipsCounter === 0:
-      //   this.shipsRang.boats.coordinates.push(sector);
-      //   // this.shipsRang.boats.coordinates = onRepacking(this.shipsRang.boats.coordinates, 1);
-      //   // return setCounter(this.shipsRang.boats);
     }
   }
 
@@ -135,7 +118,9 @@ class Ships {
     //! Если корабль не установлен, он еще не разбит на чанки
     let key: keyof typeof this.shipsRang;
     for (key in this.shipsRang) {
+      //@ts-ignore
       if (this.shipsRang[key].coordinates.includes(value)) {
+        //@ts-ignore
         this.shipsRang[key].coordinates.splice(this.shipsRang[key].coordinates.indexOf(value), 1);
         break;
       }
@@ -166,9 +151,7 @@ class Ships {
     let hit: boolean = false;
     for (key in this.shipsRang) {
       // определение попадания по кораблю
-      conditionOfShip.injury = this.shipsRang[key].coordinates
-        .flatMap((shipSector: string) => shipSector)
-        .includes(sector);
+      conditionOfShip.injury = this.shipsRang[key].coordinates.flatMap((shipSector) => shipSector).includes(sector);
 
       if (conditionOfShip.injury) {
         this.shipsRang[key].injuriesCoordinates.push(sector);
@@ -193,12 +176,12 @@ class Ships {
       }
     }
 
-    getMyShot({ hit, sector, conditionOfShip });
+    handlerToShots({ hit, sector, conditionOfShip }, 'my attack');
     msgShot({ hit, sector, conditionOfShip });
 
     if (hit) {
       onConsole('green', 'в вас попали! Сектор: ', sector);
-      toast.onToast('red', 'в вас попали! Сектор: ' + sector, true);
+      handlerToToast('red', 'в вас попали! Сектор: ' + sector, true);
 
       //! скорее всего удаляем уже удаленное выше
       this.deleteShip(sector);
@@ -216,7 +199,7 @@ class Ships {
       if (isFinishGame) player.endGame('loss');
     } else {
       onConsole('green', 'Противник промахнулся! Сектор: ', sector);
-      toast.onToast('cyan', 'Противник промахнулся! Сектор: ' + sector, true);
+      handlerToToast('cyan', 'Противник промахнулся! Сектор: ' + sector, true);
     }
   }
 
@@ -226,10 +209,10 @@ class Ships {
   msgToPlayer(value: tShot) {
     value.hit
       ? (onConsole('cyan', 'Вы попали! Сектор:', value.sector),
-        toast.onToast('cyan', 'Вы попали! Сектор: ' + value.sector, true))
+        handlerToToast('cyan', 'Вы попали! Сектор: ' + value.sector, true))
       : (onConsole('cyan', 'Вы промахнулись! Сектор: ', value.sector),
-        toast.onToast('orange', 'Вы промахнулись! Сектор: ' + value.sector, true));
-    getEnemyShot(value);
+        handlerToToast('orange', 'Вы промахнулись! Сектор: ' + value.sector, true));
+    handlerToShots(value, 'enemy attack');
   }
 }
 
