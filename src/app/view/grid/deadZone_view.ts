@@ -1,14 +1,15 @@
 import { onValidations } from '@/app/view/grid/validation';
 import { TDirectionShip } from '@/types/ships';
-import { getSort } from '@/helpers/sort';
+import { setSort } from '@/helpers/sort';
 
 //*
 //* "Мертвая" неактивная зона вокруг корабля
+//! safeZone пропускать
 //*
 export function getDeadZone(coordinates: any, activeSector: string, directionShip: string) {
   console.log('dead zone', coordinates, activeSector, directionShip);
 
-  coordinates = getSort(coordinates);
+  coordinates = setSort(coordinates);
 
   switch (directionShip) {
     case 'horizontal':
@@ -41,12 +42,10 @@ const setOnVerticalDirection = (coordinates: any, activeSector: string, directio
   //?..*+*..
   //?..*+*..
   coordinates.forEach((sector: any) => {
-    //! КООРДИНАТЫ НЕ СОРТИРУЮТСЯ НА ПОСЛЕДНИХ КЛЕТКАХ(F)
     let $pointPrevious = document?.querySelector('.' + sector)?.previousSibling as HTMLElement; //предыдущий соседний элемент
     let $pointNext = document?.querySelector('.' + sector)?.nextSibling as HTMLElement; // следующий соседний элемент
 
     if ($pointPrevious && $pointPrevious.classList[0].substring(0, 1) !== letters[letters.length - 1]) {
-      // if ($pointPrevious.classList.contains('safeZone')) return;
       onValidations($pointPrevious.classList[0], activeSector, directionShip)
         ? null
         : $pointPrevious.classList.add('safeZone'),
@@ -54,7 +53,6 @@ const setOnVerticalDirection = (coordinates: any, activeSector: string, directio
     }
 
     if ($pointNext && $pointNext.classList[0].substring(0, 1) !== letters[0]) {
-      // if ($pointPrevious.classList.contains('safeZone')) return;
       onValidations($pointNext.classList[0], activeSector, directionShip) ? null : $pointNext.classList.add('safeZone'),
         deadZoneVertical.right.push($pointNext.classList[0]);
     }
@@ -145,7 +143,6 @@ const setOnHorizontalDirection = (coordinates: any, activeSector: string, direct
   //?......++++...
   //?......****....
   //?.....++++++
-  //!РАБОТАЕТ
   if (deadZoneCoordinates.plus.length > 0) {
     const lastPlus = deadZoneCoordinates.plus[coordinates.length - 1];
     const firstPlus = deadZoneCoordinates.plus[0];
@@ -169,7 +166,6 @@ const setOnHorizontalDirection = (coordinates: any, activeSector: string, direct
   // //?.....++++++..
   // //?......****....
   // //?......++++
-  //!РАБОТАЕТ
   if (deadZoneCoordinates.minus.length > 0) {
     const lastMinus = deadZoneCoordinates.minus[coordinates.length - 1];
     const firstMinus = deadZoneCoordinates.minus[0];
@@ -181,18 +177,17 @@ const setOnHorizontalDirection = (coordinates: any, activeSector: string, direct
     const $sectorMinusPrevious = $newFirstMinus?.previousSibling as HTMLElement; //первый диагональ
 
     if ($newLastMinus?.classList[0].substring(0, 1) != letters[letters.length - 1].substring(0, 1)) {
-      $sectorMinusNext.classList.add('safeZone');
+      $sectorMinusNext?.classList.add('safeZone');
     }
 
     if ($sectorMinusPrevious?.classList[0].substring(0, 1) !== letters[letters.length - 1].substring(0, 1)) {
-      $sectorMinusPrevious.classList.add('safeZone');
+      $sectorMinusPrevious?.classList.add('safeZone');
     }
   }
 
   //?
   //?соседи по бокам
   //?.....+****+..
-  //! РАБОТАЕТ
   let last = coordinates[coordinates.length - 1];
   let first = coordinates[0];
 

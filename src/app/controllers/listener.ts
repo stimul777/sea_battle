@@ -11,7 +11,6 @@ import { colorGenerator } from '@/helpers/colorGenerator';
 //*
 export function gridListener() {
   const $myGrid = document.querySelector('.my-grid');
-  // const $myGridSectors = $myGrid?.childNodes;
   const $enemyGrid = document.querySelector('.enemy-grid');
 
   let activeSector: string = ''; //активный сектор установки моего корабля
@@ -19,7 +18,7 @@ export function gridListener() {
 
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: any) => {
-      //!если начать ставить диаганально - ставятся.
+      //!если начать ставить диагонально - ставятся.
       //!двойной клик по клетке(новый ряд) добавляет ее в массив
       if (
         ships.shipsCounter === 0 ||
@@ -32,22 +31,23 @@ export function gridListener() {
 
       if (activeSector === '') activeSector = elem;
 
-      if (ships.shipsCounter <= 4) {
+      if (activeSector === elem) {
         directionShip = 'single';
       }
 
       if (activeSector !== elem) {
         //определение направления корабля по букве (ВЕРТИКАЛЬ)
-        if (activeSector.substring(0, 1) === elem.substring(0, 1) && directionShip !== 'horizontal') {
+        if (activeSector.substring(1, 0) === elem.substring(1, 0) && directionShip != 'horizontal') {
           directionShip = 'vertical';
         }
         //определение направления корабля по цифре(ГОРИЗОНТАЛЬ)
-        if (activeSector.substring(2, 1) === elem.substring(2, 1) && directionShip !== 'vertical') {
+        if (activeSector.substring(1) === elem.substring(1) && directionShip != 'vertical') {
           directionShip = 'horizontal';
         }
       }
 
       let validation = onValidations(elem, activeSector, directionShip);
+
       if (!validation) {
         event.target.classList.add('error');
         setTimeout(() => {

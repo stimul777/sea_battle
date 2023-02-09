@@ -9,13 +9,11 @@ import { TDirectionShip } from '@/types/ships';
 //* false - ошибка
 //*
 export function onValidations(sector: string, selectedMainSector: string, directionShip: TDirectionShip): boolean {
+  console.log('onValidations', selectedMainSector, directionShip);
   if (directionShip === '') return true;
 
   const $sector = document.querySelector('.' + sector);
   const elem = $sector?.classList[0];
-
-  let previousElem = $sector?.previousSibling as HTMLElement; //активный предыдущий элемент
-  let nextElem = $sector?.nextSibling as HTMLElement; //активный следующий элемент
 
   const sectors = {
     mainSector: {
@@ -28,40 +26,48 @@ export function onValidations(sector: string, selectedMainSector: string, direct
     },
   };
 
-  let result = false;
+  let previousElem = $sector?.previousSibling as HTMLElement; //активный предыдущий элемент
+  let nextElem = $sector?.nextSibling as HTMLElement; //активный следующий элемент
+
+  const $pointPlus = document.querySelector(
+    '.' + sectors.activeSector.letter + (Number(sectors.activeSector.number) + 1),
+  );
+  const $pointMinus = document.querySelector(
+    '.' + sectors.activeSector.letter + (Number(sectors.activeSector.number) - 1),
+  );
+
+  let isResult = false;
 
   switch (directionShip) {
     case 'vertical':
-      const elSearchPlus = document.querySelector(
-        '.' + sectors.activeSector.letter + (Number(sectors.activeSector.number) + 1),
-      );
-      const elSearchMinus = document.querySelector(
-        '.' + sectors.activeSector.letter + (Number(sectors.activeSector.number) - 1),
-      );
-
       if (
         (sectors.mainSector?.letter === sectors.activeSector.letter &&
-          elSearchMinus &&
-          elSearchPlus?.classList?.contains('active')) ||
-        elSearchMinus?.classList?.contains('active')
+          $pointMinus &&
+          $pointPlus?.classList?.contains('active')) ||
+        $pointMinus?.classList?.contains('active')
       ) {
-        result = true;
+        isResult = true;
       }
       break;
 
     case 'horizontal':
       if (
-        (sectors.mainSector?.number === sectors.activeSector.number && previousElem?.classList?.contains('active')) ||
-        nextElem?.classList?.contains('active')
+        (sectors.mainSector.number === sectors.activeSector.number && previousElem?.classList.contains('active')) ||
+        nextElem?.classList.contains('active')
       ) {
-        result = true;
+        isResult = true;
       }
       break;
 
     case 'single':
-      result = true;
+      if (
+        sectors.mainSector?.letter === sectors.activeSector.letter ||
+        sectors.mainSector?.number === sectors.activeSector.number
+      ) {
+        isResult = true;
+      }
       break;
   }
 
-  return result;
+  return isResult;
 }
