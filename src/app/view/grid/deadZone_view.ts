@@ -1,11 +1,14 @@
 import { onValidations } from '@/app/view/grid/validation';
 import { TDirectionShip } from '@/types/ships';
+import { getSort } from '@/helpers/sort';
 
 //*
 //* "Мертвая" неактивная зона вокруг корабля
 //*
 export function getDeadZone(coordinates: any, activeSector: string, directionShip: string) {
   console.log('dead zone', coordinates, activeSector, directionShip);
+
+  coordinates = getSort(coordinates);
 
   switch (directionShip) {
     case 'horizontal':
@@ -24,6 +27,7 @@ export function getDeadZone(coordinates: any, activeSector: string, directionShi
 
 // УСТАНОВКА МЕРТВОЙ ЗОНЫ ПО ВЕРТИКАЛИ
 const setOnVerticalDirection = (coordinates: any, activeSector: string, directionShip: TDirectionShip) => {
+  console.log('coordinates!', coordinates);
   //! БРАТЬ ИЗ МОДЕЛИ. МОДЕЛЬ СЕТКИ.
   const letters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
@@ -36,22 +40,23 @@ const setOnVerticalDirection = (coordinates: any, activeSector: string, directio
   //?..*+*..
   //?..*+*..
   //?..*+*..
-  coordinates.sort().forEach((sector: any) => {
-    let $newSectorPrevious = document?.querySelector('.' + sector)?.previousSibling as HTMLElement; //предыдущий соседний элемент
-    let $newSectorNext = document?.querySelector('.' + sector)?.nextSibling as HTMLElement; // следующий соседний элемент
+  coordinates.forEach((sector: any) => {
+    //! КООРДИНАТЫ НЕ СОРТИРУЮТСЯ НА ПОСЛЕДНИХ КЛЕТКАХ(F)
+    let $pointPrevious = document?.querySelector('.' + sector)?.previousSibling as HTMLElement; //предыдущий соседний элемент
+    let $pointNext = document?.querySelector('.' + sector)?.nextSibling as HTMLElement; // следующий соседний элемент
 
-    if ($newSectorPrevious && $newSectorPrevious.classList[0].substring(0, 1) !== letters[letters.length - 1]) {
-      onValidations($newSectorPrevious.classList[0], activeSector, directionShip)
+    if ($pointPrevious && $pointPrevious.classList[0].substring(0, 1) !== letters[letters.length - 1]) {
+      // if ($pointPrevious.classList.contains('safeZone')) return;
+      onValidations($pointPrevious.classList[0], activeSector, directionShip)
         ? null
-        : $newSectorPrevious?.classList.add('safeZone'),
-        deadZoneVertical.left.push($newSectorPrevious.classList[0]);
+        : $pointPrevious.classList.add('safeZone'),
+        deadZoneVertical.left.push($pointPrevious.classList[0]);
     }
 
-    if ($newSectorNext && $newSectorNext.classList[0].substring(0, 1) !== letters[0]) {
-      onValidations($newSectorNext.classList[0], activeSector, directionShip)
-        ? null
-        : $newSectorNext?.classList.add('safeZone'),
-        deadZoneVertical.right.push($newSectorNext.classList[0]);
+    if ($pointNext && $pointNext.classList[0].substring(0, 1) !== letters[0]) {
+      // if ($pointPrevious.classList.contains('safeZone')) return;
+      onValidations($pointNext.classList[0], activeSector, directionShip) ? null : $pointNext.classList.add('safeZone'),
+        deadZoneVertical.right.push($pointNext.classList[0]);
     }
   });
 
@@ -60,10 +65,12 @@ const setOnVerticalDirection = (coordinates: any, activeSector: string, directio
   //?....+.+.
   //?.....*..
   //?.....*..
-  //?....+*+.\
+  //?....+*+.
   const setPointDiagonal = (points: string[]) => {
     const pointTop: string = points[0];
     const pointBottom: string = points[points.length - 1];
+
+    // console.log('point', points, pointTop, pointBottom);
 
     const pointTopMinus: string = pointTop.substring(1, 0) + (Number(pointTop.substring(1)) - 1); //крайняя точка - 1
     const pointBottomPlus: string = pointBottom.substring(1, 0) + (Number(pointBottom.substring(1)) + 1); //крайняя точка +1
@@ -71,14 +78,14 @@ const setOnVerticalDirection = (coordinates: any, activeSector: string, directio
     const $topMinus = document?.querySelector('.' + pointTopMinus) as HTMLElement; // последний элемент мертвой зоны верх
     const $bottomPlus = document.querySelector('.' + pointBottomPlus) as HTMLElement; //первый элемент мертвой зоны низ
 
-    console.log('$topMinus.classList[0].substring(1, 0)', $topMinus);
-
-    // if ($topMinus.classList[0].substring(1, 0) !== letters[letters.length - 1]) {
+    // if (pointBottom.substring(1, 0) !== letters[letters.length - 1]) {
     $topMinus?.classList.add('safeZone');
     // }
 
     $bottomPlus?.classList.add('safeZone');
   };
+
+  // console.log('deadZoneVertical', deadZoneVertical);
 
   if (deadZoneVertical.left.length > 0) setPointDiagonal(deadZoneVertical.left);
 

@@ -20,6 +20,7 @@ export function gridListener() {
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: any) => {
       //!если начать ставить диаганально - ставятся.
+      //!двойной клик по клетке(новый ряд) добавляет ее в массив
       if (
         ships.shipsCounter === 0 ||
         event.target.classList.contains('safeZone') ||
