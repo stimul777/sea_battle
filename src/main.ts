@@ -1,12 +1,12 @@
 import '@/assets/css/index.css';
 import '@/app/models/socket';
-import { ships } from '@/app/models/ships';
-import '@/app/view/index_view';
+import { ships } from '@/app/models/Ships';
+import '@/app/view';
 import { onPier } from '@/app/view/pier/pier';
 onPier(ships.shipsRang);
-import { onViewPlayer } from '@/app/view/sound_view';
+import { onViewPlayer } from '@/app/view/sound';
 onViewPlayer();
 import '@/app/view/grid/grid';
 import '@/app/controllers/listener';
-import { soundListener } from '@/app/view/sound_view';
+import { soundListener } from '@/app/controllers/soundControl';
 soundListener();

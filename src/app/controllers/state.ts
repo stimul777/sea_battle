@@ -1,5 +1,5 @@
 // view
-import { toast } from '@/app/view/toast_view';
+import { toast } from '@/app/view/toast';
 import { onPier } from '@/app/view/pier/pier';
 import { getMyShot, getEnemyShot } from '@/app/controllers/events';
 import { tShot } from '@/types/ships';

@@ -1,8 +1,8 @@
 import { TShip, TDirectionShip } from '@/types/ships';
-import { sound } from '@/app/models/sound';
+import { sound } from '@/app/models/Sound';
 import { onValidations } from '@/app/controllers/validation';
 import { setDeadZone } from '@/app/controllers/deadZone/deadZone';
-import { ships } from '@/app/models/ships';
+import { ships } from '@/app/models/Ships';
 import { colorGenerator } from '@/helpers/colorGenerator';
 
 //*
@@ -18,8 +18,8 @@ export function gridListener() {
 
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: any) => {
-      //!если начать ставить диагонально - ставятся.
-      //!двойной клик по клетке(новый ряд) добавляет ее в массив
+      //!двойной клик по клетке(новый ряд) добавляет ее в массив(тут вроде исправлено хз)
+      //!если удалить первый сектор - он будет в памяти как основной
       if (
         ships.shipsCounter === 0 ||
         event.target.classList.contains('safeZone') ||
@@ -57,7 +57,7 @@ export function gridListener() {
       }
 
       //установка/удаление сектора корабля
-      if (event.target.classList.contains('active')) {
+      if (event.target.classList.contains('active') && !event.target.classList.contains('ship-is-installed')) {
         event.target.classList.remove('active');
         ships.deleteShip(elem);
         return;
@@ -72,6 +72,7 @@ export function gridListener() {
             .flatMap((f) => f)
             .forEach((sector: string) => {
               const setElem = document.querySelector('.' + sector) as HTMLElement;
+              // setElem.classList.remove('active');
               setElem.classList.add('ship-is-installed');
               setElem.style.backgroundColor = colorShip;
             });

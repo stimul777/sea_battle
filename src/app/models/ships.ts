@@ -1,5 +1,5 @@
 import { startGame } from '@/app/controllers/events';
-import { player } from '@/app/models/player';
+import { player } from '@/app/models/Player';
 
 import { TShips, TShip, tShot, tConditionOfShip } from '@/types/ships';
 import { onConsole } from '@/helpers/console';

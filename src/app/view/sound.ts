@@ -1,5 +1,3 @@
-import { sound } from '@/app/models/sound';
-
 //*
 //* Виджет аудио плеера
 //*
@@ -25,31 +23,4 @@ export function onViewPlayer() {
   container_sound.prepend(iconPlay, iconStop, text);
 
   $wrapper.prepend(container_sound);
-}
-
-//*
-//* Слушатель событий кнопки
-//*
-export function soundListener() {
-  const $play: HTMLBaseElement = document.querySelector('.additions-icon_play') as HTMLBaseElement;
-  const $stop: HTMLBaseElement = document.querySelector('.additions-icon_stop') as HTMLBaseElement;
-
-  const onPlay = () => {
-    $play?.addEventListener('click', () => {
-      $play.style.display = 'none';
-      $stop.style.display = 'block';
-      sound.onSound(true);
-    });
-  };
-
-  const onStop = () => {
-    $stop?.addEventListener('click', () => {
-      $play.style.display = 'block';
-      $stop.style.display = 'none';
-      sound.onSound(false);
-    });
-  };
-
-  onPlay();
-  onStop();
 }

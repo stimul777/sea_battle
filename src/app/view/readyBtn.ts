@@ -19,7 +19,7 @@ function startGame(button: HTMLElement) {
   button.addEventListener('click', () => {
     const enemyWrapper: HTMLElement = document.querySelector('.enemy-grid_wrapper') as HTMLElement;
     button.style.display = 'none';
-    enemyWrapper.style.display = 'flex';
+    enemyWrapper.style.display = 'grid';
     setFrozenGrid();
   });
 }

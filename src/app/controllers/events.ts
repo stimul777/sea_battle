@@ -1,5 +1,5 @@
-import { sound } from '@/app/models/sound';
-import { onReadyBtn } from '@/app/view/readyBtn_view';
+import { sound } from '@/app/models/Sound';
+import { onReadyBtn } from '@/app/view/readyBtn';
 import { setFrozenSwitch } from '@/app/view/grid/frozenGrid';
 
 import { tShot } from '@/types/ships';
