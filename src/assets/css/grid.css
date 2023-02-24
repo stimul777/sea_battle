@@ -6,27 +6,26 @@
 
 .my-grid_wrapper, .enemy-grid_wrapper  {
   display: grid;
-  grid-template-columns: 1fr  ;
-  grid-template-rows:  35px  350px  35px ;
+  grid-template-columns: 1fr;
+  grid-template-rows:  35px  350px  auto ;
   grid-template-areas:
     "letters"
     "game-grid"
     "numbers";
-  /* border: 1px solid orange;   */
-
 }
 
 .enemy-grid_wrapper  {
   display: none;
+  margin: 0 0 0 30px;
   
 }
 
 .my-grid, .enemy-grid   {
+  position: relative;
   display: grid;
   grid-area: game-grid;
   grid-template-columns: repeat(10, 60px);
   grid-column-start: 2;
-  /* border: 1px solid red; */
 }
 
 
@@ -35,7 +34,6 @@
   grid-column-start: 2;
   display: flex;
   justify-content: space-around;
-  /* background-color: pink; */
 }
 
 .lettersTop p {
@@ -55,7 +53,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 350px;
+  /* height: 350px; */
   /* background-color: #bada55; */
 }
 
@@ -108,18 +106,6 @@
   background-position: center;
   background-color: #61C6FF;
 }
-
-
-.frozenGrid {
-  position: absolute;
-  display: none;
-  background-color: rgba(235, 13, 13, 0.473);
-  z-index: 999;
-  border: 1px solid rgba(235, 13, 13, 0.473);
-  border-radius: 6px;
-
-}
-
 
 
 /* animation */

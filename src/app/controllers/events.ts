@@ -1,6 +1,7 @@
 import { sound } from '@/app/models/Sound';
 import { onReadyBtn } from '@/app/view/readyBtn';
 import { setFrozenSwitch } from '@/app/view/grid/frozenGrid';
+// import { setDeadZone } from '@/app/controllers/deadZone/deadZone';
 
 import { tShot } from '@/types/ships';
 
@@ -33,6 +34,14 @@ function getMedia(value: tShot, $ship: any, $myGrid: HTMLElement) {
         $ship?.classList.remove('square-injured');
       }
     }
+
+    console.log('value.conditionOfShip.sunkenShip', value.conditionOfShip.sunkenShip);
+
+    // setDeadZone(
+    //   value.conditionOfShip.find((ships) => ships.find((sector) => sector === elem)),
+    //   activeSector,
+    //   directionShip,
+    // );
   }
 
   if (value.hit) {

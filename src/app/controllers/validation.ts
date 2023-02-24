@@ -42,7 +42,7 @@ export function onValidations(sector: string, selectedMainSector: string, direct
     case 'vertical':
       if (
         (sectors.mainSector?.letter === sectors.activeSector.letter &&
-          $pointMinus &&
+          //! убрано, не дает ставить вверх вертикаль(l-1) $pointMinus &&
           $pointPlus?.classList?.contains('active')) ||
         $pointMinus?.classList?.contains('active')
       ) {

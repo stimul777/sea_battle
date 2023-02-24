@@ -3,7 +3,7 @@ import { player } from '@/app/models/Player';
 
 import { TShips, TShip, tShot, tConditionOfShip } from '@/types/ships';
 import { onConsole } from '@/helpers/console';
-import { setShot, msgShot } from '@/app/models/socket';
+import { setShot, msgShot } from '@/app/server/socket';
 
 import { handlerToToast, handlerToPier, handlerToShots } from '@/app/controllers/state';
 

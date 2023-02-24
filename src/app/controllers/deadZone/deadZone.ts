@@ -7,7 +7,6 @@ import setOnHorizontalDirection from '@/app/controllers/deadZone/horizontal';
 //* "Мертвая" неактивная зона вокруг корабля
 //*
 export function setDeadZone(coordinates: any, activeSector: string, directionShip: TDirectionShip) {
-  // console.log('dead zone', coordinates, activeSector, directionShip);
   coordinates = setSort(coordinates);
 
   switch (directionShip) {

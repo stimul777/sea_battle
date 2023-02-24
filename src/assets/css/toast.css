@@ -4,14 +4,10 @@
   width: auto;
   max-height: 40px;
   border-radius: 6px;
-  margin-top: 20px;
-  bottom: 120px;
   overflow: auto;
 }
 
 .toast_text {
-  padding: 5px;
-  margin: 0;
   animation: fadeOut ease 3.5s;
   -webkit-animation: fadeOut ease 3.5s;
   -moz-animation: fadeOut ease 3.5s;

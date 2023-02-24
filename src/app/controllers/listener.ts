@@ -18,11 +18,10 @@ export function gridListener() {
 
   const listenerMyGrid = () => {
     $myGrid?.addEventListener('click', (event: any) => {
-      //!двойной клик по клетке(новый ряд) добавляет ее в массив(тут вроде исправлено хз)
-      //!если удалить первый сектор - он будет в памяти как основной
       if (
         ships.shipsCounter === 0 ||
         event.target.classList.contains('safeZone') ||
+        event.target.classList.contains('ship-is-installed') ||
         event.target?.classList[0] === 'my-grid'
       )
         return;
@@ -58,8 +57,9 @@ export function gridListener() {
 
       //установка/удаление сектора корабля
       if (event.target.classList.contains('active') && !event.target.classList.contains('ship-is-installed')) {
-        event.target.classList.remove('active');
-        ships.deleteShip(elem);
+        //! удаление корабля пока убрано
+        // event.target.classList.remove('active');
+        // ships.deleteShip(elem);
         return;
       } else {
         event.target.classList.add('active');

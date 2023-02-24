@@ -1,7 +1,7 @@
 import { onConsole } from '@/helpers/console';
 import handlerToToast from '@/app/controllers/state';
 import { TStatus } from '@/types/player';
-import { onFinish } from '@/app/models/socket';
+import { onFinish } from '@/app/server/socket';
 
 class Player {
   victories: number;

@@ -1,5 +1,5 @@
 import '@/assets/css/index.css';
-import '@/app/models/socket';
+import '@/app/server/socket';
 import { ships } from '@/app/models/Ships';
 import '@/app/view';
 import { onPier } from '@/app/view/pier/pier';
