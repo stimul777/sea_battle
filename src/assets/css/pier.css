@@ -1,5 +1,5 @@
 .wrapper-pier{
-  width: 200px;
+  width: 300px;
   font-family: 'Futura';
   font-style: normal;
   font-size: 18px;
@@ -7,4 +7,32 @@
   color: rgba(113, 124, 150, 0.7);
   border-radius: 6px;
   border: 1px solid #61C6FF;
+}
+
+.pier {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ships-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  /* border: 1px solid green; */
+}
+
+.pier_ship-view {
+  width:10px;
+  height: 10px;
+  border-radius: 4px;
+  border: 1px solid rgb(135, 144, 146);
+  background-color: rgb(135, 144, 146);
+}
+
+.ships-container__ship {
+  display: flex;
+  /* border: 1px solid red; */
 }
