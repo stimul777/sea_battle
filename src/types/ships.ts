@@ -6,6 +6,7 @@ export type TShips = {
 };
 
 export type TShip = {
+  name: string;
   quantity: number;
   installed: boolean;
   inProgress: string[];

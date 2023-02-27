@@ -16,6 +16,7 @@ class Ships {
     this.shipsCounter = 20; // кол-во доступных клеток для всех кораблей
     this.shipsRang = {
       battleship: {
+        name: 'battleship',
         quantity: 1,
         installed: false,
         inProgress: [],
@@ -23,6 +24,7 @@ class Ships {
         coordinates: [],
       },
       cruisers: {
+        name: 'cruisers',
         quantity: 2,
         installed: false,
         inProgress: [],
@@ -30,6 +32,7 @@ class Ships {
         coordinates: [],
       },
       destroyers: {
+        name: 'destroyers',
         quantity: 3,
         installed: false,
         inProgress: [],
@@ -37,6 +40,7 @@ class Ships {
         coordinates: [],
       },
       boats: {
+        name: 'boats',
         quantity: 4,
         installed: false,
         inProgress: [],
