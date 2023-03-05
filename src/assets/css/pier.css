@@ -15,24 +15,39 @@
   align-items: center;
 }
 
-.ships-container{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100px;
-  /* border: 1px solid green; */
+.pier-list {
+  margin: 0;
 }
 
-.pier_ship-view {
-  width:10px;
+.pier-list_counter {
+  margin: 0;
+}
+
+
+.pier__ship-view {
+  width: 10px;
   height: 10px;
   border-radius: 4px;
   border: 1px solid rgb(135, 144, 146);
   background-color: rgb(135, 144, 146);
+  margin: 0 5px 0 0;
 }
 
-.ships-container__ship {
+
+
+.pier-list__ships-container {
   display: flex;
-  /* border: 1px solid red; */
+}
+
+.pier-list__element {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 180px;
+}
+
+
+.pier__element {
+  display: flex;
+  justify-content: space-between;
 }
