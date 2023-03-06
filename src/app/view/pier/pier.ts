@@ -29,7 +29,7 @@ export function onPier<T extends TShips>(ships: T): void {
 //*
 //* Создание пирса и швартовка кораблей
 //*
-const createPier = <T extends TShips>(ships: any) => {
+const createPier = (ships: any) => {
   const $wrapper: HTMLElement = document.querySelector('.wrapper-pier') as HTMLElement;
 
   const _div: HTMLDivElement = document.createElement('div');
