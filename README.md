@@ -14,3 +14,6 @@ npm i
 npm run server - запустить на локалхосте, в одной локальной сетке можно играть с противником. 
 
 npm run dev - режим разработки
+
+![Screenshot_1](https://user-images.githubusercontent.com/47146778/231281653-bd966d5c-c227-473b-9f75-e905c42e43a8.png)
+![Screenshot_2](https://user-images.githubusercontent.com/47146778/231281658-3cfe69fc-e3e4-413b-b796-7fa60f1a5b0a.png)
