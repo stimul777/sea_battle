@@ -7,7 +7,7 @@ export function onReadyBtn() {
   const button: HTMLElement = document.createElement('button');
 
   button.classList.add('button-ready');
-  button.innerText = 'Я ГОТОВ КИЛИТЬ!!!1';
+  button.innerText = 'GO!!!';
   container.append(button);
   $wrapper.append(container);
 
