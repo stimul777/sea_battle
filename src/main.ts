@@ -6,6 +6,8 @@ import { onPier } from '@/app/view/pier/pier';
 onPier(ships.shipsRang);
 import { onViewPlayer } from '@/app/view/sound';
 onViewPlayer();
+import { onShowGridBtn } from '@/app/view/gridWithlettersBtn';
+onShowGridBtn();
 import '@/app/view/grid/grid';
 import '@/app/controllers/listener';
 import { soundListener } from '@/app/controllers/soundControl';
